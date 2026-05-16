@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HTML Summary Report Skill — 使用文档</title>
+<style>
+:root{--bg:#f8fafc;--card:#fff;--text:#1e293b;--text-light:#475569;--text-muted:#94a3b8;--border:#e2e8f0;--border-light:#f1f5f9;--primary:#6366f1;--primary-light:#eef2ff;--primary-dark:#4338ca;--success:#10b981;--success-light:#ecfdf5;--warning:#f59e0b;--warning-light:#fffbeb;--danger:#ef4444;--danger-light:#fef2f2;--info:#3b82f6;--info-light:#eff6ff;--radius:12px;--radius-sm:8px;--shadow:0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);--shadow-lg:0 10px 15px -3px rgba(0,0,0,.08),0 4px 6px -4px rgba(0,0,0,.04)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Noto Sans SC',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;-webkit-font-smoothing:antialiased}
+
+.hero{background:#fff;color:var(--text);padding:48px 24px 40px;text-align:center;position:relative;overflow:hidden;border-bottom:1px solid var(--border)}
+.hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle,rgba(99,102,241,.04) 0%,transparent 60%);animation:pulse 8s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+.hero h1{font-size:32px;font-weight:800;margin-bottom:8px;position:relative;background:linear-gradient(135deg,#6366f1,#8b5cf6);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero .version{display:inline-block;background:var(--primary-light);color:var(--primary);padding:2px 12px;border-radius:20px;font-size:12px;font-weight:600;margin-bottom:16px;position:relative}
+.hero .desc{font-size:15px;color:var(--text-light);max-width:600px;margin:0 auto;position:relative}
+.hero-badges{display:flex;justify-content:center;gap:8px;margin-top:20px;flex-wrap:wrap;position:relative}
+.hero-badge{background:var(--primary-light);color:var(--primary-dark);border:1px solid #c7d2fe;padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600}
+
+.container{max-width:960px;margin:0 auto;padding:32px 24px 80px}
+
+.toc{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow-lg);padding:24px 28px;margin:-20px 0 36px;position:relative;z-index:1;border:1px solid var(--border)}
+.toc-title{font-size:16px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.toc-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px 24px}
+.toc a{display:flex;align-items:center;gap:6px;padding:5px 8px;font-size:13px;color:var(--text-light);text-decoration:none;border-radius:6px;transition:all .15s}
+.toc a:hover{background:var(--primary-light);color:var(--primary)}
+.toc a .num{font-weight:700;color:var(--primary);min-width:20px}
+.toc .sub{padding-left:28px;font-size:12px}
+
+.section{margin-bottom:36px}
+.section-header{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.section-num{width:32px;height:32px;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0}
+.section-title{font-size:22px;font-weight:700;color:var(--text)}
+
+h3{font-size:16px;font-weight:600;margin:24px 0 12px;color:var(--text);display:flex;align-items:center;gap:8px}
+h3 .dot{width:6px;height:6px;border-radius:50%;background:var(--primary);flex-shrink:0}
+h4{font-size:14px;font-weight:600;margin:16px 0 8px;color:var(--text)}
+p{margin:8px 0;font-size:14px;color:var(--text-light)}
+strong{color:var(--text);font-weight:600}
+
+code{background:#f1f5f9;padding:2px 6px;border-radius:4px;font-size:12.5px;font-family:'Fira Code','JetBrains Mono',Consolas,monospace;color:#6366f1;border:1px solid #e2e8f0}
+pre{background:#1e293b;color:#e2e8f0;padding:16px 20px;border-radius:var(--radius);overflow-x:auto;font-size:12.5px;line-height:1.7;margin:12px 0;font-family:'Fira Code','JetBrains Mono',Consolas,monospace;border:1px solid #334155}
+pre code{background:none;color:inherit;padding:0;border:none}
+
+.card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px 24px;margin:12px 0;border:1px solid var(--border)}
+.card-accent{border-left:3px solid var(--primary)}
+.card-success{border-left:3px solid var(--success);background:var(--success-light)}
+.card-warning{border-left:3px solid var(--warning);background:var(--warning-light)}
+.card-danger{border-left:3px solid var(--danger);background:var(--danger-light)}
+.card-info{border-left:3px solid var(--info);background:var(--info-light)}
+
+.feature-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin:16px 0}
+.feature-item{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;transition:all .2s;cursor:default}
+.feature-item:hover{border-color:var(--primary);box-shadow:0 0 0 1px var(--primary);transform:translateY(-1px)}
+.feature-item .fi-icon{font-size:24px;margin-bottom:6px}
+.feature-item .fi-title{font-size:13px;font-weight:600;margin-bottom:2px}
+.feature-item .fi-desc{font-size:11px;color:var(--text-muted);line-height:1.5}
+
+table{width:100%;border-collapse:collapse;font-size:13px;margin:12px 0;border:1px solid var(--border);border-radius:var(--radius-sm);overflow:hidden}
+th{background:var(--bg);padding:10px 12px;text-align:left;font-weight:600;border-bottom:2px solid var(--border);font-size:12px;color:var(--text-light)}
+td{padding:8px 12px;border-bottom:1px solid var(--border-light);vertical-align:top;font-size:12.5px}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#f8fafc}
+
+.badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600;white-space:nowrap}
+.badge.green{background:#d1fae5;color:#065f46}
+.badge.blue{background:#dbeafe;color:#1e40af}
+.badge.yellow{background:#fef3c7;color:#92400e}
+.badge.red{background:#fee2e2;color:#991b1b}
+.badge.purple{background:#f3e8ff;color:#6b21a8}
+.badge.gray{background:#f1f5f9;color:#475569}
+.badge.indigo{background:#e0e7ff;color:#3730a3}
+
+.flow{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:16px 0}
+.flow-step{border-radius:var(--radius-sm);padding:10px 16px;font-size:12px;font-weight:600;text-align:center;line-height:1.4}
+.flow-step .fs-num{font-size:16px;font-weight:800;display:block;margin-bottom:2px}
+.flow-step.detect{border:2px solid #6366f1;background:#eef2ff;color:#4338ca}
+.flow-step.interact{border:2px solid #8b5cf6;background:#f5f3ff;color:#5b21b6}
+.flow-step.collect{border:2px solid #10b981;background:#ecfdf5;color:#065f46}
+.flow-step.generate{border:2px solid #f59e0b;background:#fffbeb;color:#92400e}
+.flow-step.output{border:2px solid #3b82f6;background:#eff6ff;color:#1e40af}
+.flow-arrow{color:var(--text-muted);font-size:18px;font-weight:300}
+
+.note{border-radius:var(--radius-sm);padding:14px 18px;font-size:13px;margin:12px 0;display:flex;gap:10px;align-items:flex-start}
+.note .note-icon{font-size:18px;flex-shrink:0;margin-top:1px}
+.note.info{background:var(--info-light);border:1px solid #93c5fd;color:#1e40af}
+.note.success{background:var(--success-light);border:1px solid #6ee7b7;color:#065f46}
+.note.warning{background:var(--warning-light);border:1px solid #fcd34d;color:#92400e}
+
+.tag{display:inline-block;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:700;margin:1px 2px;letter-spacing:.3px}
+.tag.blue{background:#dbeafe;color:#1d4ed8}
+.tag.green{background:#d1fae5;color:#065f46}
+.tag.yellow{background:#fef3c7;color:#92400e}
+.tag.red{background:#fee2e2;color:#991b1b}
+.tag.purple{background:#f3e8ff;color:#6b21a8}
+.tag.gray{background:#f1f5f9;color:#475569}
+
+.sep{border:none;border-top:1px solid var(--border);margin:32px 0}
+
+.step-list{counter-reset:step;list-style:none;margin:12px 0;padding:0}
+.step-list li{counter-increment:step;position:relative;padding:12px 16px 12px 48px;margin-bottom:8px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);font-size:13px;color:var(--text-light);transition:all .15s}
+.step-list li:hover{border-color:var(--primary);box-shadow:var(--shadow)}
+.step-list li::before{content:counter(step);position:absolute;left:12px;top:50%;transform:translateY(-50%);width:26px;height:26px;border-radius:50%;background:var(--primary);color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.step-list li strong{color:var(--text)}
+
+.framework-card{border:1px solid var(--border);border-radius:var(--radius);padding:16px 20px;margin:8px 0;transition:all .2s}
+.framework-card:hover{box-shadow:var(--shadow)}
+.framework-card .fc-header{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.framework-card .fc-icon{font-size:28px}
+.framework-card .fc-name{font-size:15px;font-weight:700}
+.framework-card .fc-label{margin-left:auto}
+.framework-card .fc-detail{font-size:12px;color:var(--text-muted);line-height:1.6}
+.framework-card .fc-detail code{font-size:11px}
+
+.faq-item{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:16px 20px;margin:10px 0;transition:all .15s}
+.faq-item:hover{border-color:var(--primary)}
+.faq-item .faq-q{font-size:14px;font-weight:600;color:var(--text);margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.faq-item .faq-a{font-size:13px;color:var(--text-light);line-height:1.7;padding-left:24px}
+
+@media(max-width:640px){
+  .hero{padding:32px 16px 28px}
+  .hero h1{font-size:24px}
+  .toc-grid{grid-template-columns:1fr}
+  .feature-grid{grid-template-columns:1fr 1fr}
+  .flow{flex-direction:column;align-items:stretch}
+  .flow-arrow{transform:rotate(90deg);text-align:center}
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>📋 HTML Summary Report</h1>
+  <div class="version">v1.0</div>
+  <p class="desc">多项目通用的交互式项目审查报告生成器 — 自动检测技术栈，并行采集数据，生成包含安全漏洞、逻辑问题、运行匹配、优化建议的完整 HTML 报告</p>
+  <div class="hero-badges">
+    <span class="hero-badge">🔍 9+5 框架适配</span>
+    <span class="hero-badge">⚡ 17路并行搜索</span>
+    <span class="hero-badge">🔒 漏洞+修复并排</span>
+    <span class="hero-badge">🗺️ 可勾选路线图</span>
+    <span class="hero-badge">🌙 暗色模式</span>
+    <span class="hero-badge">📊 增量对比</span>
+  </div>
+  <div style="margin-top:18px;font-size:12px;color:var(--text-muted);position:relative">
+    作者：<strong style="color:var(--primary)">Luoci</strong> · 
+    📧 <a href="mailto:luociqaq@qq.com" style="color:var(--primary);text-decoration:none">luociqaq@qq.com</a> · 
+    🐙 <a href="https://github.com/luo-ci" target="_blank" style="color:var(--primary);text-decoration:none">GitHub</a>
+  </div>
+</div>
+
+<div class="container">
+
+<div class="toc">
+  <div class="toc-title">📑 文档目录</div>
+  <div class="toc-grid">
+    <a href="#overview"><span class="num">1</span> 概述与触发</a>
+    <a href="#workflow" class="sub">完整工作流程</a>
+    <a href="#output" class="sub">输出结构</a>
+    <a href="#framework"><span class="num">2</span> 框架适配系统</a>
+    <a href="#backend-detect" class="sub">后端框架检测</a>
+    <a href="#frontend-detect" class="sub">前端框架检测</a>
+    <a href="#keywords" class="sub">搜索关键词映射</a>
+    <a href="#collection" class="sub">数据采集示例</a>
+    <a href="#sections"><span class="num">3</span> 报告板块详解</a>
+    <a href="#interactive" class="sub">交互功能</a>
+    <a href="#templates" class="sub">板块模板与CSS类</a>
+    <a href="#assets"><span class="num">4</span> 资源文件管理</a>
+    <a href="#strategy"><span class="num">5</span> 分部分生成策略</a>
+    <a href="#customize"><span class="num">6</span> 自定义与扩展</a>
+    <a href="#faq"><span class="num">7</span> 常见问题</a>
+    <a href="#changelog"><span class="num">8</span> 版本历史</a>
+  </div>
+</div>
+
+<div class="section" id="overview">
+  <div class="section-header">
+    <div class="section-num">1</div>
+    <div class="section-title">概述与触发</div>
+  </div>
+
+  <p>HTML Summary Report 是一个 <strong>多项目通用</strong> 的 Trae IDE Skill。它会自动检测项目的技术栈，并行采集数据，生成包含安全漏洞、逻辑问题、运行匹配、优化建议等内容的完整交互式 HTML 报告。</p>
+
+  <div class="feature-grid">
+    <div class="feature-item"><div class="fi-icon">🔍</div><div class="fi-title">自动框架检测</div><div class="fi-desc">9种后端 + 5种前端框架自动识别，动态调整搜索策略</div></div>
+    <div class="feature-item"><div class="fi-icon">⚡</div><div class="fi-title">并行数据采集</div><div class="fi-desc">4批次17路并行搜索，快速高效收集项目数据</div></div>
+    <div class="feature-item"><div class="fi-icon">🔒</div><div class="fi-title">漏洞+修复并排</div><div class="fi-desc">Critical/High/Medium漏洞附漏洞代码和修复代码双栏对比</div></div>
+    <div class="feature-item"><div class="fi-icon">🗺️</div><div class="fi-title">可勾选路线图</div><div class="fi-desc">分阶段优化路线，checkbox勾选，进度自动更新并持久化</div></div>
+    <div class="feature-item"><div class="fi-icon">🌙</div><div class="fi-title">暗色模式</div><div class="fi-desc">CSS变量驱动，一键切换，状态保存到localStorage</div></div>
+    <div class="feature-item"><div class="fi-icon">📊</div><div class="fi-title">增量对比</div><div class="fi-desc">与上次报告对比，标记新增🆕和已修复✅问题</div></div>
+    <div class="feature-item"><div class="fi-icon">🏗️</div><div class="fi-title">架构图+流程图</div><div class="fi-desc">Flexbox盒子布局的系统架构图和数据请求流程图</div></div>
+    <div class="feature-item"><div class="fi-icon">📦</div><div class="fi-title">多项目便携</div><div class="fi-desc">CSS/JS模板存储在skill目录，自动复制到目标项目</div></div>
+  </div>
+
+  <h3><span class="dot"></span>触发方式</h3>
+  <div class="card">
+    <table>
+      <thead><tr><th>触发词</th><th>说明</th><th>示例</th></tr></thead>
+      <tbody>
+        <tr><td><code>总结</code></td><td>最常用触发词</td><td>"帮我总结一下项目"</td></tr>
+        <tr><td><code>生成总结</code></td><td>同上</td><td>"生成总结报告"</td></tr>
+        <tr><td>HTML格式审查请求</td><td>任何暗示需要项目审查的请求</td><td>"检查项目漏洞并生成HTML报告"</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="section" id="workflow">
+  <div class="section-header">
+    <div class="section-num">2</div>
+    <div class="section-title">完整工作流程</div>
+  </div>
+
+  <div class="flow">
+    <div class="flow-step detect"><span class="fs-num">1</span>框架检测</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step interact"><span class="fs-num">2</span>交互选板</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step collect"><span class="fs-num">3</span>并行采集</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step generate"><span class="fs-num">4</span>生成HTML</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step output"><span class="fs-num">5</span>输出报告</div>
+  </div>
+
+  <ol class="step-list">
+    <li><strong>框架检测</strong> — 并行 Glob 检测指示文件（server/think, artisan, manage.py, pom.xml, go.mod 等），识别前后端框架，设置 <code>{{BACKEND_FRAMEWORK}}</code> 和 <code>{{TECH_STACK}}</code> 变量</li>
+    <li><strong>交互选板</strong> — 通过 AskUserQuestion 询问用户3个问题：需要哪些板块、额外内容、审查深度（快速/深度）</li>
+    <li><strong>并行采集</strong> — 根据检测到的框架，使用框架特定的关键词执行4批次并行搜索（项目结构5路 + 安全扫描5路 + 逻辑验证3路 + 冗余扫描4路）</li>
+    <li><strong>生成HTML</strong> — 按模板生成HTML内容，超过50KB时自动分part生成后合并，复制CSS/JS到项目目录</li>
+    <li><strong>输出报告</strong> — 清理临时part文件，最终输出 summary-report.html + report-assets/ 目录</li>
+  </ol>
+
+  <div class="note info">
+    <span class="note-icon">💡</span>
+    <div><strong>深度模式 vs 快速模式</strong>：深度模式运行全部4批次（17路搜索），包含逻辑验证和冗余扫描；快速模式仅运行批次1+2（10路搜索），跳过深度逻辑验证，速度更快。</div>
+  </div>
+</div>
+
+<div class="section" id="output">
+  <div class="section-header">
+    <div class="section-num">3</div>
+    <div class="section-title">输出结构</div>
+  </div>
+
+  <div class="card card-accent">
+    <h4>📁 目标项目输出</h4>
+    <pre><code>{project-root}/
+├── summary-report.html         ← 最终报告（引用外部CSS/JS）
+└── report-assets/
+    ├── report.css              ← 从skill目录复制
+    └── report.js               ← 从skill目录复制</code></pre>
+  </div>
+
+  <div class="card card-accent">
+    <h4>📁 Skill 源目录</h4>
+    <pre><code>.trae/skills/html-summary-report/
+├── SKILL.md                    ← 指令文件（Agent读取执行）
+├── DOCS.html                   ← 本文档
+└── report-assets/
+    ├── report.css              ← CSS模板（布局/组件/暗色/打印/响应式）
+    └── report.js               ← JS模板（折叠/路线图/主题/复制/排序/对比）</code></pre>
+  </div>
+
+  <table>
+    <thead><tr><th>引用模式</th><th>适用场景</th><th>引用方式</th></tr></thead>
+    <tbody>
+      <tr><td><span class="badge green">外部引用（默认）</span></td><td>本地查看、常规使用</td><td><code>&lt;link rel="stylesheet" href="report-assets/report.css"&gt;</code></td></tr>
+      <tr><td><span class="badge yellow">内联模式</span></td><td>邮件发送、单文件分发</td><td><code>&lt;style&gt;/* CSS内容 */&lt;/style&gt;</code></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<hr class="sep">
+
+<div class="section" id="framework">
+  <div class="section-header">
+    <div class="section-num">4</div>
+    <div class="section-title">框架适配系统</div>
+  </div>
+
+  <p>Skill 会在数据采集前 <strong>首先检测项目的技术栈</strong>，然后根据检测结果 <strong>动态调整</strong> 搜索关键词和目录路径。这确保了在不同框架的项目中都能正确采集数据，而不会用 ThinkPHP 的关键词去搜索 Django 项目。</p>
+
+  <div class="note warning">
+    <span class="note-icon">⚠️</span>
+    <div><strong>重要</strong>：框架检测是数据采集的<strong>第一步</strong>。如果跳过此步骤，搜索关键词将默认使用 ThinkPHP 模式，导致其他框架项目采集不到数据。</div>
+  </div>
+
+  <h3 id="backend-detect"><span class="dot"></span>后端框架检测（9种）</h3>
+
+  <div class="framework-card">
+    <div class="fc-header"><span class="fc-icon">🐘</span><span class="fc-name">ThinkPHP</span><span class="fc-label"><span class="badge yellow">ThinkPHP 8 API Server</span></span></div>
+    <div class="fc-detail">指示文件：<code>server/think</code> + <code>server/app/controller/</code><br>控制器：<code>server/app/controller/</code> · 中间件：<code>server/app/middleware/</code> · 路由：<code>server/route/app.php</code></div>
+  </div>
+  <div class="framework-card">
+    <div class="fc-header"><span class="fc-icon">🔺</span><span class="fc-name">Laravel</span><span class="fc-label"><span class="badge red">Laravel API Server</span></span></div>
+    <div class="fc-detail">指示文件：<code>app/Http/Controllers/</code> + <code>artisan</code><br>控制器：<code>app/Http/Controllers/</code> · 中间件：<code>app/Http/Middleware/</code> · 路由：<code>routes/api.php</code></div>
+  </div>
+  <div class="framework-card">
+    <div class="fc-header"><span class="fc-icon">🟣</span><span class="fc-name">Symfony</span><span class="fc-label"><span class="badge purple">Symfony API Server</span></span></div>
+    <div class="fc-detail">指示文件：<code>src/Controller/</code> + <code>composer.json</code>(含symfony)</div>
+  </div>
+  <div class="framework-card">
+    <div class="fc-header"><span class="fc-icon">🐍</span><span class="fc-name">Django / Flask</span><span class="fc-label"><span class="badge green">Python API Server</span></span></div>
+    <div class="fc-detail">指示文件：<code>app.py</code> / <code>manage.py</code> + <code>views.py</code><br>控制器：<code>views.py</code> · 模型：<code>models.py</code> · 路由：<code>urls.py</code> · 配置：<code>settings.py</code></div>
+  </div>
+  <div class="framework-card">
+    <div class="fc-header"><span class="fc-icon">☕</span><span class="fc-name">Spring Boot</span><span class="fc-label"><span class="badge green">Spring Boot API Server</span></span></div>
+    <div class="fc-detail">指示文件：<code>src/main/java/</code> + <code>pom.xml</code> / <code>build.gradle</code><br>控制器：<code>**/controller/</code> · 实体：<code>**/entity/</code> · 仓库：<code>**/repository/</code></div>
+  </div>
+  <div class="framework-card">
+    <div class="fc-header"><span class="fc-icon">🟢</span><span class="fc-name">Express</span><span class="fc-label"><span class="badge blue">Express API Server</span></span></div>
+    <div class="fc-detail">指示文件：<code>index.js</code> / <code>app.js</code> + <code>package.json</code>(含express)</div>
+  </div>
+  <div class="framework-card">
+    <div class="fc-header"><span class="fc-icon">🐱</span><span class="fc-name">NestJS</span><span class="fc-label"><span class="badge blue">NestJS API Server</span></span></div>
+    <div class="fc-detail">指示文件：<code>src/index.ts</code> + <code>nest-cli.json</code></div>
+  </div>
+  <div class="framework-card">
+    <div class="fc-header"><span class="fc-icon">🟩</span><span class="fc-name">Node.js (无框架)</span><span class="fc-label"><span class="badge gray">Node.js API Server</span></span></div>
+    <div class="fc-detail">指示文件：<code>server/</code> + <code>package.json</code>(无框架依赖)</div>
+  </div>
+  <div class="framework-card">
+    <div class="fc-header"><span class="fc-icon">🔵</span><span class="fc-name">Go</span><span class="fc-label"><span class="badge blue">Go API Server</span></span></div>
+    <div class="fc-detail">指示文件：<code>main.go</code> + <code>go.mod</code><br>处理器：<code>internal/handler/</code> · 中间件：<code>internal/middleware/</code> · 路由：<code>internal/router/</code></div>
+  </div>
+
+  <h3 id="frontend-detect"><span class="dot"></span>前端框架检测（5种）</h3>
+  <table>
+    <thead><tr><th>指示文件</th><th>框架</th><th>架构标签</th></tr></thead>
+    <tbody>
+      <tr><td><code>vite.config.js</code> + <code>src/*.vue</code></td><td>Vue 3 + Vite</td><td><span class="badge green">Vue 3 SPA</span></td></tr>
+      <tr><td><code>vue.config.js</code> + <code>src/*.vue</code></td><td>Vue 2 + Webpack</td><td><span class="badge green">Vue 2 SPA</span></td></tr>
+      <tr><td><code>next.config.js</code> + <code>src/app/</code></td><td>Next.js</td><td><span class="badge blue">Next.js SSR</span></td></tr>
+      <tr><td><code>react-scripts</code> in <code>package.json</code></td><td>React CRA</td><td><span class="badge blue">React SPA</span></td></tr>
+      <tr><td><code>nuxt.config.ts</code> + <code>app.vue</code></td><td>Nuxt 3</td><td><span class="badge green">Nuxt 3 SSR</span></td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="keywords"><span class="dot"></span>搜索关键词映射</h3>
+  <p>检测到框架后，所有搜索关键词和目录路径会 <strong>自动替换</strong> 为对应框架的模式。以下是完整的映射表：</p>
+
+  <div style="overflow-x:auto">
+  <table>
+    <thead><tr><th>类别</th><th>ThinkPHP</th><th>Laravel</th><th>Django/Flask</th><th>Spring Boot</th><th>Express/NestJS</th><th>Go</th></tr></thead>
+    <tbody>
+      <tr><td><strong>控制器</strong></td><td><code>server/app/controller/</code></td><td><code>app/Http/Controllers/</code></td><td><code>views.py</code></td><td><code>**/controller/</code></td><td><code>src/controllers/</code></td><td><code>internal/handler/</code></td></tr>
+      <tr><td><strong>中间件</strong></td><td><code>server/app/middleware/</code></td><td><code>app/Http/Middleware/</code></td><td><code>middleware.py</code></td><td><code>**/filter/</code></td><td><code>src/middleware/</code></td><td><code>internal/middleware/</code></td></tr>
+      <tr><td><strong>路由</strong></td><td><code>server/route/app.php</code></td><td><code>routes/api.php</code></td><td><code>urls.py</code></td><td><code>**/config/</code></td><td><code>src/routes/</code></td><td><code>internal/router/</code></td></tr>
+      <tr><td><strong>模型</strong></td><td><code>server/app/model/</code></td><td><code>app/Models/</code></td><td><code>models.py</code></td><td><code>**/entity/</code></td><td><code>src/models/</code></td><td><code>internal/model/</code></td></tr>
+      <tr><td><strong>DB查询</strong></td><td><code>Db::name</code></td><td><code>DB::table</code></td><td><code>objects.filter</code></td><td><code>repository.findById</code></td><td><code>Model.find</code></td><td><code>db.Query</code></td></tr>
+      <tr><td><strong>参数接收</strong></td><td><code>request-&gt;param</code></td><td><code>$request-&gt;input</code></td><td><code>request.POST</code></td><td><code>@RequestParam</code></td><td><code>req.body</code></td><td><code>c.Param</code></td></tr>
+      <tr><td><strong>文件上传</strong></td><td><code>request-&gt;file</code></td><td><code>$request-&gt;file</code></td><td><code>request.FILES</code></td><td><code>MultipartFile</code></td><td><code>multer</code></td><td><code>FormFile</code></td></tr>
+      <tr><td><strong>HTTP客户端</strong></td><td><code>file_get_contents</code></td><td><code>Http::get</code></td><td><code>requests.get</code></td><td><code>RestTemplate</code></td><td><code>axios</code></td><td><code>http.Get</code></td></tr>
+      <tr><td><strong>认证</strong></td><td><code>Auth.php</code></td><td><code>Auth::user</code></td><td><code>@login_required</code></td><td><code>@PreAuthorize</code></td><td><code>jwt.verify</code></td><td><code>jwt.Parse</code></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3 id="collection"><span class="dot"></span>框架特定数据采集示例</h3>
+
+  <div class="framework-card">
+    <div class="fc-header"><span class="fc-icon">🐍</span><span class="fc-name">Django/Flask 数据采集</span></div>
+    <div class="fc-detail">
+      <span class="tag blue">Batch1</span> views.py, models.py, urls.py, settings.py, migrations/<br>
+      <span class="tag red">Batch2</span> requests.get, request.FILES, os.system, subprocess, eval(, exec(<br>
+      <span class="tag yellow">Batch3</span> objects.filter, objects.create, field mismatch, serializer<br>
+      <span class="tag green">Batch4</span> */views.py, */models.py, */urls.py, */migrations/*.py
+    </div>
+  </div>
+  <div class="framework-card">
+    <div class="fc-header"><span class="fc-icon">☕</span><span class="fc-name">Spring Boot 数据采集</span></div>
+    <div class="fc-detail">
+      <span class="tag blue">Batch1</span> controller/, entity/, repository/, application.yml, schema.sql<br>
+      <span class="tag red">Batch2</span> RestTemplate, @RequestParam, MultipartFile, Runtime.exec<br>
+      <span class="tag yellow">Batch3</span> findById, save, findBy, field mismatch, DTO<br>
+      <span class="tag green">Batch4</span> **/controller/*.java, **/entity/*.java, **/repository/*.java
+    </div>
+  </div>
+  <div class="framework-card">
+    <div class="fc-header"><span class="fc-icon">🟢</span><span class="fc-name">Express/NestJS 数据采集</span></div>
+    <div class="fc-detail">
+      <span class="tag blue">Batch1</span> routes/, controllers/, models/, prisma/schema.prisma, app.js<br>
+      <span class="tag red">Batch2</span> eval(, child_process, fs.writeFile, req.body, multer<br>
+      <span class="tag yellow">Batch3</span> Model.find, Model.create, findByIdAndUpdate, field mismatch<br>
+      <span class="tag green">Batch4</span> src/**/*.controller.ts, src/**/*.module.ts, src/**/*.service.ts
+    </div>
+  </div>
+</div>
+
+<hr class="sep">
+
+<div class="section" id="sections">
+  <div class="section-header">
+    <div class="section-num">5</div>
+    <div class="section-title">报告板块详解</div>
+  </div>
+
+  <p>用户可通过交互选择需要生成的板块。所有板块 <strong>默认折叠</strong>，点击标题栏展开。折叠时标题栏显示严重性徽章（如 <span class="badge red">2 严重</span>）。</p>
+
+  <h3 id="interactive"><span class="dot"></span>交互功能</h3>
+  <div class="feature-grid">
+    <div class="feature-item"><div class="fi-icon">📂</div><div class="fi-title">折叠/展开</div><div class="fi-desc">点击标题栏切换，默认全部折叠，带旋转箭头动画</div></div>
+    <div class="feature-item"><div class="fi-icon">🗺️</div><div class="fi-title">可勾选路线图</div><div class="fi-desc">checkbox勾选任务，进度条自动更新，localStorage持久化</div></div>
+    <div class="feature-item"><div class="fi-icon">🌙</div><div class="fi-title">暗色模式</div><div class="fi-desc">CSS变量驱动，一键切换，状态保存到localStorage</div></div>
+    <div class="feature-item"><div class="fi-icon">📋</div><div class="fi-title">代码复制</div><div class="fi-desc">hover代码块显示复制按钮，点击复制到剪贴板</div></div>
+    <div class="feature-item"><div class="fi-icon">📊</div><div class="fi-title">表格排序</div><div class="fi-desc">点击表头按列排序，支持升序/降序切换</div></div>
+    <div class="feature-item"><div class="fi-icon">🧭</div><div class="fi-title">导航侧边栏</div><div class="fi-desc">浮动导航，滚动监听高亮当前板块</div></div>
+    <div class="feature-item"><div class="fi-icon">💾</div><div class="fi-title">进度持久化</div><div class="fi-desc">路线图勾选状态保存到localStorage，刷新不丢失</div></div>
+    <div class="feature-item"><div class="fi-icon">📊</div><div class="fi-title">增量对比</div><div class="fi-desc">与上次报告对比，标记新增🆕和已修复✅问题</div></div>
+  </div>
+
+  <h3 id="templates"><span class="dot"></span>板块模板与CSS类</h3>
+  <table>
+    <thead><tr><th>板块</th><th>内容描述</th><th>关键CSS类</th></tr></thead>
+    <tbody>
+      <tr><td>📊 概览</td><td>统计卡片网格 + 健康分数进度条（安全/逻辑/兼容/质量）</td><td><code>.module-card</code> <code>.health-row</code> <code>.bar-fill</code></td></tr>
+      <tr><td>🏗️ 架构</td><td>Flexbox彩色盒子+箭头的系统架构图，分层展示</td><td><code>.arch-diagram</code> <code>.arch-box.frontend/backend/data</code></td></tr>
+      <tr><td>🔄 流程</td><td>请求生命周期流程图：用户→Vue→Store→Axios→中间件→Controller→DB</td><td><code>.flow-diagram</code> <code>.flow-node.client/middleware/server/db</code></td></tr>
+      <tr><td>📋 功能表</td><td>模块卡片：emoji+标题+摘要+能力标签chips+详细描述段落</td><td><code>.module-card</code> <code>.tag.blue/green/yellow/purple/red</code></td></tr>
+      <tr><td>🔌 API列表</td><td>方法(颜色编码)+路径+功能+参数的完整API表格</td><td><code>.api-table</code> <code>.method.get/post/put/delete</code></td></tr>
+      <tr><td>📁 文件列表</td><td>前后端文件表格：图标+文件名+完整路径+说明，按类别分组</td><td><code>.file-table</code> <code>.ft-icon/name/path/desc</code></td></tr>
+      <tr><td>🔒 漏洞</td><td>严重性卡片 + 漏洞代码/修复代码双栏并排对比</td><td><code>.issue-card.critical/high/medium</code> <code>.code-fix-pair</code> <code>.err-line</code> <code>.fix-line</code></td></tr>
+      <tr><td>🧠 逻辑</td><td>逻辑问题卡片 + 冗余代码/文件审查</td><td><code>.issue-card</code> <code>.code-fix-pair</code></td></tr>
+      <tr><td>🔗 匹配</td><td>前后端兼容性表格，✅匹配/⚠️警告/❌错误状态</td><td><code>.compat-table</code> <code>.status-ok/warn/err</code></td></tr>
+      <tr><td>🚀 优化</td><td>P0-P3优先级排序的优化建议卡片</td><td><code>.module-card</code></td></tr>
+      <tr><td>📊 对比</td><td>增量对比：健康分数变化+新增🆕/已修复✅/仍存在🔴问题</td><td><code>.diff-table</code> <code>.diff-added/removed/changed/same</code></td></tr>
+      <tr><td>🗺️ 路线图</td><td>5阶段可勾选任务 + 自动进度条 + localStorage持久化</td><td><code>.roadmap</code> <code>.roadmap-phase/item</code> <code>.ri-priority.p0-p3</code></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<hr class="sep">
+
+<div class="section" id="assets">
+  <div class="section-header">
+    <div class="section-num">6</div>
+    <div class="section-title">资源文件管理</div>
+  </div>
+
+  <div class="note success">
+    <span class="note-icon">✅</span>
+    <div><strong>多项目便携性</strong>：CSS/JS模板存储在skill目录内，每次生成报告时自动复制到目标项目的 <code>report-assets/</code> 目录。换到其他项目时无需手动配置。</div>
+  </div>
+
+  <h4>修改资源文件流程</h4>
+  <ol class="step-list">
+    <li>编辑 <strong>skill目录</strong> 中的 <code>.trae/skills/html-summary-report/report-assets/report.css</code> 或 <code>report.js</code></li>
+    <li>重新生成报告时，skill会自动将修改后的文件复制到目标项目的 <code>report-assets/</code> 目录</li>
+    <li><strong>不要</strong>在SKILL.md中重复CSS/JS内容，该文件仅包含引用模式</li>
+  </ol>
+</div>
+
+<div class="section" id="strategy">
+  <div class="section-header">
+    <div class="section-num">7</div>
+    <div class="section-title">分部分生成策略</div>
+  </div>
+
+  <p>当HTML内容超过 <strong>~50KB</strong> 时，自动使用分部分生成避免内容截断：</p>
+
+  <div class="flow">
+    <div class="flow-step generate">Part1<br><small>头部+概览+架构+流程</small></div>
+    <span class="flow-arrow">+</span>
+    <div class="flow-step generate">Part2<br><small>功能表+API列表</small></div>
+    <span class="flow-arrow">+</span>
+    <div class="flow-step generate">Part3<br><small>文件列表</small></div>
+    <span class="flow-arrow">+</span>
+    <div class="flow-step generate">Part4<br><small>漏洞+逻辑</small></div>
+    <span class="flow-arrow">+</span>
+    <div class="flow-step generate">Part5<br><small>匹配+优化+对比+路线图</small></div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step output">合并<br><small>+清理</small></div>
+  </div>
+
+  <ol class="step-list">
+    <li>创建 <code>summary-report-parts/</code> 临时目录</li>
+    <li>按顺序生成 p1.html ~ p5.html，每个part包含一段完整HTML片段</li>
+    <li>使用 PowerShell 合并所有part为 <code>summary-report.html</code>（UTF-8编码）</li>
+    <li>验证合并文件以 <code>&lt;!DOCTYPE html&gt;</code> 开头、<code>&lt;/html&gt;</code> 结尾</li>
+    <li>删除 <code>summary-report-parts/</code> 临时目录，仅保留最终报告</li>
+  </ol>
+</div>
+
+<hr class="sep">
+
+<div class="section" id="customize">
+  <div class="section-header">
+    <div class="section-num">8</div>
+    <div class="section-title">自定义与扩展</div>
+  </div>
+
+  <h4>添加新框架支持</h4>
+  <p>在 SKILL.md 的框架检测表中添加新行：</p>
+  <pre><code>| `指示文件路径` | 框架名 | 架构标签 |</code></pre>
+  <p>同时在"框架特定搜索关键词"映射表中添加对应的列，填入控制器目录、中间件目录、DB查询模式等信息。</p>
+
+  <h4>修改报告样式</h4>
+  <p>编辑 <code>report-assets/report.css</code> 中的 CSS 变量即可全局调整：</p>
+  <pre><code>:root {
+  --bg: #f8fafc;        /* 页面背景 */
+  --card: #fff;         /* 卡片背景 */
+  --primary: #6366f1;   /* 主色调 */
+  --radius: 12px;       /* 圆角大小 */
+  --shadow: ...;        /* 阴影效果 */
+}</code></pre>
+
+  <h4>添加新报告板块</h4>
+  <ol class="step-list">
+    <li>在 SKILL.md 的 "Report Structure" 中添加新板块描述</li>
+    <li>在 "Pre-Generation: Interactive Section Selection" 中添加新选项</li>
+    <li>在 report.css 中添加新板块的CSS类</li>
+    <li>在 HTML 模板的 nav-sidebar 中添加新导航项</li>
+  </ol>
+</div>
+
+<div class="section" id="faq">
+  <div class="section-header">
+    <div class="section-num">9</div>
+    <div class="section-title">常见问题</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">❓ 换到 Python 后端项目能用吗？</div>
+    <div class="faq-a">可以。Skill 会自动检测 <code>manage.py</code> / <code>app.py</code> / <code>views.py</code> 等指示文件，识别为 Django/Flask 后端，然后使用 <code>objects.filter</code>、<code>request.POST</code>、<code>requests.get</code> 等 Python 特定关键词进行数据采集。</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">❓ 框架检测不到怎么办？</div>
+    <div class="faq-a">如果所有指示文件都不存在，Skill 会标记为 "Custom Backend"，使用通用路径和关键词进行搜索。你可以在 SKILL.md 的检测表中添加新框架的指示文件来扩展支持。</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">❓ 报告太大生成失败怎么办？</div>
+    <div class="faq-a">Skill 自动使用分部分生成策略，将内容拆分为多个 part 文件分别生成，最后用 PowerShell 合并。如果仍然失败，可以选择"快速模式"减少板块数量。</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">❓ 如何修改报告样式？</div>
+    <div class="faq-a">编辑 <code>.trae/skills/html-summary-report/report-assets/report.css</code>，修改 <code>:root</code> 中的 CSS 变量即可全局调整颜色和间距，然后重新生成报告。</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">❓ 增量对比是怎么工作的？</div>
+    <div class="faq-a">每次打开报告时，<code>report.js</code> 会将当前问题列表和健康分数保存到 <code>localStorage</code>。下次生成报告时，Skill 读取上次的数据与当前数据对比，标记新增🆕和已修复✅的问题。</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">❓ 可以只生成部分板块吗？</div>
+    <div class="faq-a">可以。生成前会通过 AskUserQuestion 交互询问你需要哪些板块和深度，未选择的板块不会出现在报告中。</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">❓ 如何添加对新框架的支持？</div>
+    <div class="faq-a">在 SKILL.md 的框架检测表中添加新行的指示文件路径和框架名，同时在搜索关键词映射表中添加对应的列。详见"自定义与扩展"章节。</div>
+  </div>
+</div>
+
+<div class="section" id="changelog">
+  <div class="section-header">
+    <div class="section-num">10</div>
+    <div class="section-title">版本历史</div>
+  </div>
+
+  <table>
+    <thead><tr><th>版本</th><th>日期</th><th>变更</th></tr></thead>
+    <tbody>
+      <tr><td><span class="badge indigo">v1.0</span></td><td>2026-05-16</td><td>初始版本：9+5框架适配、并行数据采集、漏洞+修复并排、可勾选路线图、暗色模式、增量对比、分部分生成、多项目便携</td></tr>
+    </tbody>
+  </table>
+</div>
+
+</div>
+</body>
+</html>
