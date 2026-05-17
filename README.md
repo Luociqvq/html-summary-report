@@ -6,72 +6,78 @@
 [![Email](https://img.shields.io/badge/Email-luociqaq%40qq.com-red)](mailto:luociqaq@qq.com)
 [![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
 
-一个用于 [Trae IDE](https://trae.ai) 的 Skill 插件，当用户说"总结"时自动生成交互式 HTML 项目审查报告。支持 **9种后端 + 5种前端框架** 自动检测，**17路并行数据采集**，生成包含安全漏洞、逻辑问题、运行匹配、优化建议的完整报告。
+## 这是什么？
 
-## ✨ 特性
+这是一个 [Trae IDE](https://trae.ai) 的 Skill 插件。当你在项目中说 **"总结"** 时，它会自动检测你的技术栈，并行采集项目数据，然后生成一份 **交互式 HTML 审查报告**。
+
+报告包含12个板块：项目概览、系统架构、请求流程、功能表、API列表、文件列表、安全漏洞审查、逻辑问题、前后端匹配、优化建议、增量对比、优化路线图。每个板块可折叠展开，漏洞附带修复代码，路线图可勾选追踪进度。
+
+**支持的框架**：9种后端（ThinkPHP/Laravel/Django/Spring Boot/Express/NestJS/Node.js/Go/Symfony）+ 5种前端（Vue3/Vue2/Next.js/React/Nuxt3），自动检测，无需手动配置。
+
+## 报告长什么样？
+
+### 默认状态 — 所有板块折叠
+
+打开报告时，12个板块默认折叠，左侧导航栏可快速跳转。点击任意标题即可展开查看详细内容。
+
+![报告总览 - 折叠状态](screenshots/01-overview-collapsed.png)
+
+### 📊 项目概览 — 统计卡片 + 健康分数
+
+展开后展示统计卡片（后端控制器数、前端视图数、数据库表数）和四维健康分数进度条：安全性、逻辑性、兼容性、代码质量。
+
+![项目概览](screenshots/02-overview-expanded.png)
+
+### 🏗️ 系统架构 — 分层架构图
+
+Flexbox盒子布局的系统架构图，从上到下展示应用层、前端模块、后端中间件、数据层的分层关系和连接方式。
+
+![系统架构总览](screenshots/03-architecture-expanded.png)
+
+### 🔄 请求流程 — 完整生命周期
+
+从用户操作到界面更新的完整请求流程图：Vue组件 → Pinia Store → Axios → 中间件 → Controller → 数据库 → 响应返回。
+
+![数据请求流程](screenshots/04-flow-expanded.png)
+
+### 📋 功能表 — 模块卡片网格
+
+每个功能模块一张卡片，包含功能描述、能力标签（CRUD/统计/筛选/安全警告）和详细说明。
+
+![功能表](screenshots/05-features-expanded.png)
+
+### 🔒 安全漏洞 — 漏洞代码 vs 修复代码
+
+漏洞按严重性分级（严重/高危/中危），每个漏洞附带 **⚠️ 漏洞代码** 和 **✅ 修复代码** 双栏并排对比，关键行高亮标注。
+
+![安全漏洞审查](screenshots/06-vulnerabilities-expanded.png)
+
+### 🗺️ 优化路线图 — 可勾选追踪
+
+分5个阶段（P0紧急→P3体验提升），checkbox勾选后进度条自动更新，状态持久化到 localStorage，刷新不丢失。
+
+![优化路线图](screenshots/07-roadmap-expanded.png)
+
+### 🌙 暗色模式
+
+CSS变量驱动，一键切换暗色主题，所有板块完美适配。
+
+![暗色模式](screenshots/08-dark-mode.png)
+
+## 核心特性
 
 | 特性 | 说明 |
 |------|------|
-| 🔍 **自动框架检测** | 9种后端（ThinkPHP/Laravel/Django/Spring Boot/Express/NestJS/Go等）+ 5种前端框架自动识别 |
+| 🔍 **自动框架检测** | 9种后端 + 5种前端框架自动识别，无需手动配置 |
 | ⚡ **并行数据采集** | 4批次17路并行搜索，快速高效收集项目数据 |
 | 🔒 **漏洞+修复并排** | Critical/High/Medium漏洞附漏洞代码和修复代码双栏对比 |
 | 🗺️ **可勾选路线图** | 分阶段优化路线，checkbox勾选，进度自动更新并持久化 |
 | 🌙 **暗色模式** | CSS变量驱动，一键切换，状态保存到localStorage |
 | 📊 **增量对比** | 与上次报告对比，标记新增🆕和已修复✅问题 |
 | 🏗️ **架构图+流程图** | Flexbox盒子布局的系统架构图和数据请求流程图 |
-| 📦 **多项目便携** | CSS/JS模板存储在skill目录，自动复制到目标项目 |
+| � **多项目便携** | CSS/JS模板存储在skill目录，自动复制到目标项目 |
 
-## 📸 截图预览
-
-### 报告总览（默认折叠状态）
-
-所有板块默认折叠，点击标题即可展开查看详细内容，左侧导航栏快速跳转。
-
-![报告总览 - 折叠状态](screenshots/01-overview-collapsed.png)
-
-### 📊 项目概览（展开）
-
-统计卡片展示后端控制器、前端视图、数据库表数量，健康分数进度条直观呈现安全性/逻辑性/兼容性/代码质量评分。
-
-![项目概览 - 展开](screenshots/02-overview-expanded.png)
-
-### 🏗️ 系统架构总览（展开）
-
-Flexbox盒子布局的系统架构图，清晰展示应用层、前端模块、后端中间件、数据层的分层关系。
-
-![系统架构总览](screenshots/03-architecture-expanded.png)
-
-### 🔄 数据请求流程（展开）
-
-完整的请求生命周期流程图：用户操作 → Vue组件 → Pinia Store → Axios → 中间件 → Controller → 数据库 → 响应返回。
-
-![数据请求流程](screenshots/04-flow-expanded.png)
-
-### 📋 功能表（展开）
-
-模块卡片网格布局，每个模块展示功能描述、能力标签（CRUD/统计/筛选等）和详细说明。
-
-![功能表](screenshots/05-features-expanded.png)
-
-### 🔒 安全漏洞审查（展开）
-
-漏洞卡片按严重性分级（严重/高危/中危），每个漏洞附带 **漏洞代码 ⚠️** 和 **修复代码 ✅** 双栏并排对比，一目了然。
-
-![安全漏洞审查](screenshots/06-vulnerabilities-expanded.png)
-
-### 🗺️ 优化路线图（展开）
-
-分5个阶段的可勾选路线图（P0紧急→P3体验），checkbox勾选后进度条自动更新，状态持久化到localStorage。
-
-![优化路线图](screenshots/07-roadmap-expanded.png)
-
-### 🌙 暗色模式
-
-CSS变量驱动的暗色主题，一键切换，所有板块完美适配。
-
-![暗色模式](screenshots/08-dark-mode.png)
-
-## 🚀 安装
+## 安装
 
 将本仓库克隆到 Trae IDE 的 skills 目录下：
 
@@ -95,17 +101,9 @@ git clone https://github.com/Luociqvq/html-summary-report.git
 │   ├── report.css              ← CSS模板（布局/组件/暗色/打印/响应式）
 │   └── report.js               ← JS模板（折叠/路线图/主题/复制/排序/对比）
 └── screenshots/                ← 演示截图
-    ├── 01-overview-collapsed.png
-    ├── 02-overview-expanded.png
-    ├── 03-architecture-expanded.png
-    ├── 04-flow-expanded.png
-    ├── 05-features-expanded.png
-    ├── 06-vulnerabilities-expanded.png
-    ├── 07-roadmap-expanded.png
-    └── 08-dark-mode.png
 ```
 
-## 📖 使用方法
+## 使用方法
 
 ### 触发方式
 
@@ -123,7 +121,7 @@ git clone https://github.com/Luociqvq/html-summary-report.git
 1️⃣ 框架检测 → 2️⃣ 交互选板 → 3️⃣ 并行采集 → 4️⃣ 生成HTML → 5️⃣ 输出报告
 ```
 
-1. **框架检测** — 自动检测项目技术栈（ThinkPHP/Laravel/Django/Spring Boot/Express/NestJS/Go等）
+1. **框架检测** — 自动检测项目技术栈
 2. **交互选板** — 询问你需要哪些板块和审查深度
 3. **并行采集** — 4批次17路并行搜索采集项目数据
 4. **生成HTML** — 按模板生成交互式HTML报告
@@ -139,9 +137,7 @@ git clone https://github.com/Luociqvq/html-summary-report.git
     └── report.js               ← 报告交互逻辑
 ```
 
-## 🏗️ 框架适配
-
-Skill 会自动检测项目的技术栈，并动态调整搜索关键词和目录路径：
+## 框架适配
 
 ### 支持的后端框架
 
@@ -167,7 +163,7 @@ Skill 会自动检测项目的技术栈，并动态调整搜索关键词和目�
 | React CRA | `react-scripts` in `package.json` |
 | Nuxt 3 | `nuxt.config.ts` + `app.vue` |
 
-## 📋 报告板块
+## 报告板块一览
 
 | 板块 | 内容 |
 |------|------|
@@ -184,7 +180,7 @@ Skill 会自动检测项目的技术栈，并动态调整搜索关键词和目�
 | 📊 对比 | 增量对比（与上次报告比较） |
 | 🗺️ 路线图 | 可勾选任务 + 自动进度条 |
 
-## 🎨 自定义
+## 自定义
 
 ### 修改报告样式
 
@@ -203,16 +199,16 @@ Skill 会自动检测项目的技术栈，并动态调整搜索关键词和目�
 
 在 `SKILL.md` 的框架检测表和搜索关键词映射表中添加新行即可。
 
-## 📄 文档
+## 文档
 
 - [DOCS.html](DOCS.html) — 交互式HTML格式使用文档（推荐）
 - [DOCS.md](DOCS.md) — Markdown格式使用文档
 
-## 📜 许可证
+## 许可证
 
 [MIT License](LICENSE)
 
-## 👤 作者
+## 作者
 
 **Luoci**
 
