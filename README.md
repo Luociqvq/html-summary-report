@@ -21,19 +21,55 @@
 | 🏗️ **架构图+流程图** | Flexbox盒子布局的系统架构图和数据请求流程图 |
 | 📦 **多项目便携** | CSS/JS模板存储在skill目录，自动复制到目标项目 |
 
-## 📸 截图
+## 📸 截图预览
 
-### 概览面板（默认折叠）
-![Overview](screenshots/overview.png)
+### 报告总览（默认折叠状态）
 
-### 展开视图 — 概览+架构+功能表
-![Expanded Overview](screenshots/overview-expanded.png)
+所有板块默认折叠，点击标题即可展开查看详细内容，左侧导航栏快速跳转。
 
-### 安全漏洞审查 — 漏洞代码/修复代码并排对比
-![Vulnerabilities](screenshots/vulnerabilities.png)
+![报告总览 - 折叠状态](screenshots/01-overview-collapsed.png)
 
-### 暗色模式
-![Dark Mode](screenshots/dark-mode.png)
+### 📊 项目概览（展开）
+
+统计卡片展示后端控制器、前端视图、数据库表数量，健康分数进度条直观呈现安全性/逻辑性/兼容性/代码质量评分。
+
+![项目概览 - 展开](screenshots/02-overview-expanded.png)
+
+### 🏗️ 系统架构总览（展开）
+
+Flexbox盒子布局的系统架构图，清晰展示应用层、前端模块、后端中间件、数据层的分层关系。
+
+![系统架构总览](screenshots/03-architecture-expanded.png)
+
+### 🔄 数据请求流程（展开）
+
+完整的请求生命周期流程图：用户操作 → Vue组件 → Pinia Store → Axios → 中间件 → Controller → 数据库 → 响应返回。
+
+![数据请求流程](screenshots/04-flow-expanded.png)
+
+### 📋 功能表（展开）
+
+模块卡片网格布局，每个模块展示功能描述、能力标签（CRUD/统计/筛选等）和详细说明。
+
+![功能表](screenshots/05-features-expanded.png)
+
+### 🔒 安全漏洞审查（展开）
+
+漏洞卡片按严重性分级（严重/高危/中危），每个漏洞附带 **漏洞代码 ⚠️** 和 **修复代码 ✅** 双栏并排对比，一目了然。
+
+![安全漏洞审查](screenshots/06-vulnerabilities-expanded.png)
+
+### 🗺️ 优化路线图（展开）
+
+分5个阶段的可勾选路线图（P0紧急→P3体验），checkbox勾选后进度条自动更新，状态持久化到localStorage。
+
+![优化路线图](screenshots/07-roadmap-expanded.png)
+
+### 🌙 暗色模式
+
+CSS变量驱动的暗色主题，一键切换，所有板块完美适配。
+
+![暗色模式](screenshots/08-dark-mode.png)
 
 ## 🚀 安装
 
@@ -45,7 +81,7 @@ cd ~/.trae/skills   # macOS/Linux
 cd %USERPROFILE%\.trae\skills   # Windows
 
 # 克隆仓库
-git clone https://github.com/luo-ci/html-summary-report.git
+git clone https://github.com/Luociqvq/html-summary-report.git
 ```
 
 安装后的目录结构：
@@ -59,6 +95,14 @@ git clone https://github.com/luo-ci/html-summary-report.git
 │   ├── report.css              ← CSS模板（布局/组件/暗色/打印/响应式）
 │   └── report.js               ← JS模板（折叠/路线图/主题/复制/排序/对比）
 └── screenshots/                ← 演示截图
+    ├── 01-overview-collapsed.png
+    ├── 02-overview-expanded.png
+    ├── 03-architecture-expanded.png
+    ├── 04-flow-expanded.png
+    ├── 05-features-expanded.png
+    ├── 06-vulnerabilities-expanded.png
+    ├── 07-roadmap-expanded.png
+    └── 08-dark-mode.png
 ```
 
 ## 📖 使用方法
