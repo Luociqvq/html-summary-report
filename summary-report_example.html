@@ -1,0 +1,651 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TodoFlow 项目审查总结报告</title>
+  <link rel="stylesheet" href="report-assets/report.css">
+</head>
+<body>
+  <div class="header-bar">
+    <div>
+      <h1>📋 TodoFlow 项目审查报告</h1>
+      <div class="subtitle">生成时间: 2026-05-16 | 项目: my-todo</div>
+    </div>
+    <button class="theme-btn" onclick="toggleTheme()">🌙 暗色</button>
+  </div>
+  <nav class="nav-sidebar">
+    <a class="nav-item active" href="#overview">📊 概览</a>
+    <a class="nav-item" href="#architecture">🏗️ 架构</a>
+    <a class="nav-item" href="#flow">🔄 流程</a>
+    <a class="nav-item" href="#features">📋 功能表</a>
+    <a class="nav-item" href="#api-list">🔌 API列表</a>
+    <a class="nav-item" href="#file-list">📁 文件列表</a>
+    <a class="nav-item" href="#vulnerabilities">🔒 漏洞</a>
+    <a class="nav-item" href="#logic">🧠 逻辑</a>
+    <a class="nav-item" href="#compatibility">🔗 兼容</a>
+    <a class="nav-item" href="#optimization">🚀 优化</a>
+    <a class="nav-item" href="#comparison">📊 对比</a>
+    <a class="nav-item" href="#roadmap">🗺️ 路线图</a>
+  </nav>
+  <div class="container">
+    <div class="section" id="overview">
+      <div class="section-header collapsed" onclick="toggleSection(this)">
+        <span class="icon">📊</span><h2>项目概览</h2><div class="toggle">▼</div>
+      </div>
+      <div class="section-body hidden">
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:16px">
+          <div class="module-card"><h4>📦 后端控制器</h4><p>11 个控制器（含3个非标准命名）</p><p>45+ API端点</p></div>
+          <div class="module-card"><h4>🖥️ 前端视图</h4><p>14 个Vue组件</p><p>9 个Pinia Store</p></div>
+          <div class="module-card"><h4>🗄️ 数据库表</h4><p>17 张表</p><p>含关联表5张</p></div>
+          <div class="module-card"><h4>🔒 安全评分</h4><p>35% — 需改进</p></div>
+          <div class="module-card"><h4>🧠 逻辑评分</h4><p>60% — 部分问题</p></div>
+          <div class="module-card"><h4>🔗 兼容评分</h4><p>75% — 基本匹配</p></div>
+        </div>
+        <div class="health-row"><span class="label">安全性</span><div class="bar"><div class="bar-fill" style="width:35%;background:#ef4444"></div></div><span class="val" style="color:#ef4444">35%</span></div>
+        <div class="health-row"><span class="label">逻辑性</span><div class="bar"><div class="bar-fill" style="width:60%;background:#f59e0b"></div></div><span class="val" style="color:#f59e0b">60%</span></div>
+        <div class="health-row"><span class="label">兼容性</span><div class="bar"><div class="bar-fill" style="width:75%;background:#3b82f6"></div></div><span class="val" style="color:#3b82f6">75%</span></div>
+        <div class="health-row"><span class="label">代码质量</span><div class="bar"><div class="bar-fill" style="width:55%;background:#f59e0b"></div></div><span class="val" style="color:#f59e0b">55%</span></div>
+      </div>
+    </div>
+    <div class="section" id="architecture">
+      <div class="section-header collapsed" onclick="toggleSection(this)">
+        <span class="icon">🏗️</span><h2>系统架构总览</h2><div class="toggle">▼</div>
+      </div>
+      <div class="section-body hidden">
+        <p class="desc" style="font-size:12px;color:var(--text-light);margin-bottom:12px">前后端分离架构，Vue 3 SPA + ThinkPHP 8 API Server，通过 RESTful API 通信</p>
+        <div class="arch-diagram">
+          <div class="arch-label">应用层</div>
+          <div class="arch-row">
+            <div class="arch-box frontend">Vue 3 SPA<br><small>前端应用 (port 3210)</small></div>
+            <span class="arch-arrow">⇄</span>
+            <div class="arch-box backend">ThinkPHP 8<br><small>后端 API (port 9527)</small></div>
+            <span class="arch-arrow">⇄</span>
+            <div class="arch-box external">MySQL<br><small>数据库存储</small></div>
+          </div>
+          <div class="arch-label" style="margin-top:16px">前端模块</div>
+          <div class="arch-row">
+            <div class="arch-box frontend">TaskView<br><small>任务管理</small></div>
+            <div class="arch-box frontend">FinanceView<br><small>财务管理</small></div>
+            <div class="arch-box frontend">InventoryView<br><small>库存管理</small></div>
+            <div class="arch-box frontend">FitnessView<br><small>健身管理</small></div>
+            <div class="arch-box frontend">CoupleView<br><small>情侣空间</small></div>
+          </div>
+          <div class="arch-label" style="margin-top:16px">后端中间件</div>
+          <div class="arch-row">
+            <div class="arch-box backend">Cors 中间件<br><small>跨域处理</small></div>
+            <div class="arch-box backend">Auth 中间件<br><small>认证 (userId=1)</small></div>
+          </div>
+          <div class="arch-label" style="margin-top:16px">数据层</div>
+          <div class="arch-row">
+            <div class="arch-box data">flower_todos<br><small>任务表</small></div>
+            <div class="arch-box data">flower_finance_records<br><small>财务表</small></div>
+            <div class="arch-box data">flower_inventories<br><small>库存表</small></div>
+            <div class="arch-box data">flower_fitness_records<br><small>健身表</small></div>
+            <div class="arch-box data">flower_debts<br><small>债务表</small></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="flow">
+      <div class="section-header collapsed" onclick="toggleSection(this)">
+        <span class="icon">🔄</span><h2>数据请求流程</h2><div class="toggle">▼</div>
+      </div>
+      <div class="section-body hidden">
+        <div class="flow-diagram">
+          <div class="flow-row">
+            <div class="flow-node client">用户操作<br><small>点击/输入</small></div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-node client">Vue 组件<br><small>事件处理</small></div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-node client">Pinia Store<br><small>状态管理</small></div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-node client">api.js<br><small>Axios 请求</small></div>
+          </div>
+          <div class="flow-desc">HTTP 请求 → http://localhost:9527/api/*</div>
+          <div class="flow-row" style="margin-top:8px">
+            <div class="flow-node middleware">Cors 中间件<br><small>跨域头</small></div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-node middleware">Auth 中间件<br><small>userId=1</small></div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-node server">Controller<br><small>业务逻辑</small></div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-node db">Db::name()<br><small>SQL 操作</small></div>
+          </div>
+          <div class="flow-desc">返回 JSON → {code:200, msg:'success', data:{...}}</div>
+          <div class="flow-row" style="margin-top:8px">
+            <div class="flow-node server">JSON 响应<br><small>后端返回</small></div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-node client">Axios 拦截器<br><small>提取 data</small></div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-node client">Store 更新<br><small>响应式状态</small></div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-node client">Vue 重渲染<br><small>界面更新</small></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" id="features">
+      <div class="section-header collapsed" onclick="toggleSection(this)">
+        <span class="icon">📋</span><h2>功能表</h2><div class="toggle">▼</div>
+      </div>
+      <div class="section-body hidden">
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:10px">
+          <div class="module-card"><h4>📝 任务管理 (Todo)</h4><p>任务的完整生命周期管理</p><p style="margin-top:4px"><span style="font-size:10px;background:#dbeafe;color:#1d4ed8;padding:1px 6px;border-radius:3px;margin-right:4px">CRUD</span><span style="font-size:10px;background:#d1fae5;color:#065f46;padding:1px 6px;border-radius:3px;margin-right:4px">标签关联</span><span style="font-size:10px;background:#fef3c7;color:#92400e;padding:1px 6px;border-radius:3px;margin-right:4px">多条件筛选</span><span style="font-size:10px;background:#f3e8ff;color:#6b21a8;padding:1px 6px;border-radius:3px">分页</span></p><p style="margin-top:4px;font-size:11px;color:var(--text-muted)">支持按优先级/状态/标签/关键词筛选，创建时可选多个标签，统计待完成/已完成/逾期数量</p></div>
+          <div class="module-card"><h4>🏷️ 标签管理 (Tag)</h4><p>任务分类标签系统</p><p style="margin-top:4px"><span style="font-size:10px;background:#dbeafe;color:#1d4ed8;padding:1px 6px;border-radius:3px;margin-right:4px">CRUD</span><span style="font-size:10px;background:#d1fae5;color:#065f46;padding:1px 6px;border-radius:3px">关联统计</span></p><p style="margin-top:4px;font-size:11px;color:var(--text-muted)">标签可自定义名称和颜色，删除标签时自动解除与任务的关联，显示每个标签下的任务数量</p></div>
+          <div class="module-card"><h4>💰 财务管理 (Finance)</h4><p>个人收支记录与统计分析</p><p style="margin-top:4px"><span style="font-size:10px;background:#dbeafe;color:#1d4ed8;padding:1px 6px;border-radius:3px;margin-right:4px">CRUD</span><span style="font-size:10px;background:#d1fae5;color:#065f46;padding:1px 6px;border-radius:3px;margin-right:4px">统计汇总</span><span style="font-size:10px;background:#fef3c7;color:#92400e;padding:1px 6px;border-radius:3px">月度报表</span></p><p style="margin-top:4px;font-size:11px;color:var(--text-muted)">支持收入/支出分类，按日期范围统计，计算总收入/总支出/净收入，按类别汇总</p></div>
+          <div class="module-card"><h4>📦 库存管理 (Inventory)</h4><p>家庭物品库存跟踪</p><p style="margin-top:4px"><span style="font-size:10px;background:#dbeafe;color:#1d4ed8;padding:1px 6px;border-radius:3px;margin-right:4px">CRUD</span><span style="font-size:10px;background:#d1fae5;color:#065f46;padding:1px 6px;border-radius:3px;margin-right:4px">分类管理</span><span style="font-size:10px;background:#fef3c7;color:#92400e;padding:1px 6px;border-radius:3px">低库存预警</span></p><p style="margin-top:4px;font-size:11px;color:var(--text-muted)">物品按分类组织，记录数量/单位/存放位置，支持关键词搜索，统计总物品数和低库存项</p></div>
+          <div class="module-card"><h4>💪 健身管理 (Fitness)</h4><p>运动记录与趋势分析</p><p style="margin-top:4px"><span style="font-size:10px;background:#dbeafe;color:#1d4ed8;padding:1px 6px;border-radius:3px;margin-right:4px">CRUD</span><span style="font-size:10px;background:#d1fae5;color:#065f46;padding:1px 6px;border-radius:3px;margin-right:4px">统计</span><span style="font-size:10px;background:#fef3c7;color:#92400e;padding:1px 6px;border-radius:3px">趋势分析</span></p><p style="margin-top:4px;font-size:11px;color:var(--text-muted)">记录运动类型/时长/消耗卡路里，按日期范围统计总运动时长和总卡路里，支持按类型筛选</p></div>
+          <div class="module-card"><h4>💳 债务管理 (Debt)</h4><p>借贷记录与状态追踪</p><p style="margin-top:4px"><span style="font-size:10px;background:#dbeafe;color:#1d4ed8;padding:1px 6px;border-radius:3px;margin-right:4px">CRUD</span><span style="font-size:10px;background:#d1fae5;color:#065f46;padding:1px 6px;border-radius:3px;margin-right:4px">状态管理</span><span style="font-size:10px;background:#fef3c7;color:#92400e;padding:1px 6px;border-radius:3px">统计</span></p><p style="margin-top:4px;font-size:11px;color:var(--text-muted)">区分借入/借出，记录对方/金额/到期日，支持状态流转（待还/已还/逾期），统计总借入/借出</p></div>
+          <div class="module-card"><h4>📚 教程管理 (Tutorial)</h4><p>通用教程内容管理</p><p style="margin-top:4px"><span style="font-size:10px;background:#dbeafe;color:#1d4ed8;padding:1px 6px;border-radius:3px;margin-right:4px">CRUD</span><span style="font-size:10px;background:#fee2e2;color:#991b1b;padding:1px 6px;border-radius:3px">⚠️SSRF</span></p><p style="margin-top:4px;font-size:11px;color:var(--text-muted)">教程按分类组织，支持标题/内容/分类管理，含fetchUrl功能可获取外部URL内容（存在SSRF漏洞）</p></div>
+          <div class="module-card"><h4>📷 摄影管理 (Photography)</h4><p>摄影教程与作品展示</p><p style="margin-top:4px"><span style="font-size:10px;background:#dbeafe;color:#1d4ed8;padding:1px 6px;border-radius:3px">CRUD</span></p><p style="margin-top:4px;font-size:11px;color:var(--text-muted)">摄影教程的增删改查，按分类浏览，与Tutorial模块结构高度重复（建议合并为基类）</p></div>
+          <div class="module-card"><h4>🍳 食谱管理 (Recipe)</h4><p>食谱教程与分类管理</p><p style="margin-top:4px"><span style="font-size:10px;background:#dbeafe;color:#1d4ed8;padding:1px 6px;border-radius:3px">CRUD</span></p><p style="margin-top:4px;font-size:11px;color:var(--text-muted)">食谱教程的增删改查，按分类浏览，与Tutorial模块结构高度重复（建议合并为基类）</p></div>
+          <div class="module-card"><h4>💑 情侣空间 (Couple)</h4><p>情侣互动与纪念</p><p style="margin-top:4px"><span style="font-size:10px;background:#dbeafe;color:#1d4ed8;padding:1px 6px;border-radius:3px;margin-right:4px">资料管理</span><span style="font-size:10px;background:#d1fae5;color:#065f46;padding:1px 6px;border-radius:3px;margin-right:4px">纪念日</span><span style="font-size:10px;background:#fee2e2;color:#991b1b;padding:1px 6px;border-radius:3px">⚠️上传漏洞</span></p><p style="margin-top:4px;font-size:11px;color:var(--text-muted)">管理情侣资料（姓名/纪念日），纪念日倒计时，照片上传（无文件类型限制，存在安全漏洞）</p></div>
+          <div class="module-card"><h4>⚙️ 系统管理 (System)</h4><p>系统健康状态检查</p><p style="margin-top:4px"><span style="font-size:10px;background:#dbeafe;color:#1d4ed8;padding:1px 6px;border-radius:3px">状态检查</span></p><p style="margin-top:4px;font-size:11px;color:var(--text-muted)">检查系统运行状态，数据库连接是否正常，返回PHP版本和运行时间</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" id="api-list">
+      <div class="section-header collapsed" onclick="toggleSection(this)">
+        <span class="icon">🔌</span><h2>API 列表</h2><div class="toggle">▼</div>
+      </div>
+      <div class="section-body hidden">
+        <h3 style="font-size:14px;margin:0 0 8px">📝 任务管理 (Todo)</h3>
+        <table class="api-table"><thead><tr><th>方法</th><th>路径</th><th>功能</th><th>参数</th></tr></thead><tbody>
+          <tr><td><span class="method get">GET</span></td><td>/api/todos</td><td>获取任务列表</td><td>tag_id, priority, status, keyword, page, pageSize</td></tr>
+          <tr><td><span class="method post">POST</span></td><td>/api/todos</td><td>创建任务</td><td>title, description, priority, due_date, tag_ids[]</td></tr>
+          <tr><td><span class="method get">GET</span></td><td>/api/todos/:id</td><td>获取单个任务</td><td>-</td></tr>
+          <tr><td><span class="method put">PUT</span></td><td>/api/todos/:id</td><td>更新任务</td><td>title, description, priority, status, due_date, tag_ids[]</td></tr>
+          <tr><td><span class="method delete">DELETE</span></td><td>/api/todos/:id</td><td>删除任务</td><td>-</td></tr>
+          <tr><td><span class="method get">GET</span></td><td>/api/todos/stats</td><td>获取任务统计</td><td>-</td></tr>
+        </tbody></table>
+        <h3 style="font-size:14px;margin:12px 0 8px">🏷️ 标签管理 (Tag)</h3>
+        <table class="api-table"><thead><tr><th>方法</th><th>路径</th><th>功能</th><th>参数</th></tr></thead><tbody>
+          <tr><td><span class="method get">GET</span></td><td>/api/tags</td><td>获取标签列表</td><td>-</td></tr>
+          <tr><td><span class="method post">POST</span></td><td>/api/tags</td><td>创建标签</td><td>name, color</td></tr>
+          <tr><td><span class="method put">PUT</span></td><td>/api/tags/:id</td><td>更新标签</td><td>name, color</td></tr>
+          <tr><td><span class="method delete">DELETE</span></td><td>/api/tags/:id</td><td>删除标签</td><td>-</td></tr>
+        </tbody></table>
+        <h3 style="font-size:14px;margin:12px 0 8px">💰 财务管理 (Finance)</h3>
+        <table class="api-table"><thead><tr><th>方法</th><th>路径</th><th>功能</th><th>参数</th></tr></thead><tbody>
+          <tr><td><span class="method get">GET</span></td><td>/api/finances</td><td>获取财务记录</td><td>type, category, start_date, end_date, page, pageSize</td></tr>
+          <tr><td><span class="method post">POST</span></td><td>/api/finances</td><td>创建财务记录</td><td>type, amount, category, description, date</td></tr>
+          <tr><td><span class="method get">GET</span></td><td>/api/finances/:id</td><td>获取单条记录</td><td>-</td></tr>
+          <tr><td><span class="method put">PUT</span></td><td>/api/finances/:id</td><td>更新财务记录</td><td>type, amount, category, description, date</td></tr>
+          <tr><td><span class="method delete">DELETE</span></td><td>/api/finances/:id</td><td>删除财务记录</td><td>-</td></tr>
+          <tr><td><span class="method get">GET</span></td><td>/api/finances/stats</td><td>获取财务统计</td><td>start_date, end_date</td></tr>
+        </tbody></table>
+        <h3 style="font-size:14px;margin:12px 0 8px">📦 库存管理 (Inventory)</h3>
+        <table class="api-table"><thead><tr><th>方法</th><th>路径</th><th>功能</th><th>参数</th></tr></thead><tbody>
+          <tr><td><span class="method get">GET</span></td><td>/api/inventories</td><td>获取库存列表</td><td>category, keyword, page, pageSize</td></tr>
+          <tr><td><span class="method post">POST</span></td><td>/api/inventories</td><td>创建库存项</td><td>name, category, quantity, unit, location, description</td></tr>
+          <tr><td><span class="method get">GET</span></td><td>/api/inventories/:id</td><td>获取单个库存</td><td>-</td></tr>
+          <tr><td><span class="method put">PUT</span></td><td>/api/inventories/:id</td><td>更新库存项</td><td>name, category, quantity, unit, location, description</td></tr>
+          <tr><td><span class="method delete">DELETE</span></td><td>/api/inventories/:id</td><td>删除库存项</td><td>-</td></tr>
+          <tr><td><span class="method get">GET</span></td><td>/api/inventories/stats</td><td>获取库存统计</td><td>-</td></tr>
+        </tbody></table>
+        <h3 style="font-size:14px;margin:12px 0 8px">💪 健身管理 (Fitness)</h3>
+        <table class="api-table"><thead><tr><th>方法</th><th>路径</th><th>功能</th><th>参数</th></tr></thead><tbody>
+          <tr><td><span class="method get">GET</span></td><td>/api/fitness</td><td>获取健身记录</td><td>type, start_date, end_date, page, pageSize</td></tr>
+          <tr><td><span class="method post">POST</span></td><td>/api/fitness</td><td>创建健身记录</td><td>type, duration, calories, description, date</td></tr>
+          <tr><td><span class="method get">GET</span></td><td>/api/fitness/:id</td><td>获取单条记录</td><td>-</td></tr>
+          <tr><td><span class="method put">PUT</span></td><td>/api/fitness/:id</td><td>更新健身记录</td><td>type, duration, calories, description, date</td></tr>
+          <tr><td><span class="method delete">DELETE</span></td><td>/api/fitness/:id</td><td>删除健身记录</td><td>-</td></tr>
+          <tr><td><span class="method get">GET</span></td><td>/api/fitness/stats</td><td>获取健身统计</td><td>start_date, end_date</td></tr>
+        </tbody></table>
+        <h3 style="font-size:14px;margin:12px 0 8px">💳 债务管理 (Debt)</h3>
+        <table class="api-table"><thead><tr><th>方法</th><th>路径</th><th>功能</th><th>参数</th></tr></thead><tbody>
+          <tr><td><span class="method get">GET</span></td><td>/api/debts</td><td>获取债务列表</td><td>type, status, page, pageSize</td></tr>
+          <tr><td><span class="method post">POST</span></td><td>/api/debts</td><td>创建债务</td><td>person, amount, type, description, due_date</td></tr>
+          <tr><td><span class="method put">PUT</span></td><td>/api/debts/:id</td><td>更新债务</td><td>person, amount, type, status, description, due_date</td></tr>
+          <tr><td><span class="method delete">DELETE</span></td><td>/api/debts/:id</td><td>删除债务</td><td>-</td></tr>
+          <tr><td><span class="method get">GET</span></td><td>/api/debts/stats</td><td>获取债务统计</td><td>-</td></tr>
+        </tbody></table>
+        <h3 style="font-size:14px;margin:12px 0 8px">📚 教程管理 (Tutorial)</h3>
+        <table class="api-table"><thead><tr><th>方法</th><th>路径</th><th>功能</th><th>参数</th></tr></thead><tbody>
+          <tr><td><span class="method get">GET</span></td><td>/api/tutorials</td><td>获取教程列表</td><td>category, page, pageSize</td></tr>
+          <tr><td><span class="method post">POST</span></td><td>/api/tutorials</td><td>创建教程</td><td>title, content, category</td></tr>
+          <tr><td><span class="method put">PUT</span></td><td>/api/tutorials/:id</td><td>更新教程</td><td>title, content, category</td></tr>
+          <tr><td><span class="method delete">DELETE</span></td><td>/api/tutorials/:id</td><td>删除教程</td><td>-</td></tr>
+          <tr><td><span class="method post">POST</span></td><td>/api/tutorials/fetch</td><td>获取外部URL内容</td><td>url ⚠️SSRF</td></tr>
+        </tbody></table>
+        <h3 style="font-size:14px;margin:12px 0 8px">📷 摄影管理 (Photography)</h3>
+        <table class="api-table"><thead><tr><th>方法</th><th>路径</th><th>功能</th><th>参数</th></tr></thead><tbody>
+          <tr><td><span class="method get">GET</span></td><td>/api/photography/tutorials</td><td>获取摄影教程</td><td>page, pageSize</td></tr>
+          <tr><td><span class="method post">POST</span></td><td>/api/photography/tutorials</td><td>创建摄影教程</td><td>title, content, category</td></tr>
+          <tr><td><span class="method get">GET</span></td><td>/api/photography/tutorials/:id</td><td>获取单个教程</td><td>-</td></tr>
+          <tr><td><span class="method put">PUT</span></td><td>/api/photography/tutorials/:id</td><td>更新教程</td><td>title, content, category</td></tr>
+          <tr><td><span class="method delete">DELETE</span></td><td>/api/photography/tutorials/:id</td><td>删除教程</td><td>-</td></tr>
+        </tbody></table>
+        <h3 style="font-size:14px;margin:12px 0 8px">🍳 食谱管理 (Recipe)</h3>
+        <table class="api-table"><thead><tr><th>方法</th><th>路径</th><th>功能</th><th>参数</th></tr></thead><tbody>
+          <tr><td><span class="method get">GET</span></td><td>/api/recipe/tutorials</td><td>获取食谱列表</td><td>category, page, pageSize</td></tr>
+          <tr><td><span class="method post">POST</span></td><td>/api/recipe/tutorials</td><td>创建食谱</td><td>title, content, category</td></tr>
+          <tr><td><span class="method get">GET</span></td><td>/api/recipe/tutorials/:id</td><td>获取单个食谱</td><td>-</td></tr>
+          <tr><td><span class="method put">PUT</span></td><td>/api/recipe/tutorials/:id</td><td>更新食谱</td><td>title, content, category</td></tr>
+          <tr><td><span class="method delete">DELETE</span></td><td>/api/recipe/tutorials/:id</td><td>删除食谱</td><td>-</td></tr>
+        </tbody></table>
+        <h3 style="font-size:14px;margin:12px 0 8px">💑 情侣空间 (Couple)</h3>
+        <table class="api-table"><thead><tr><th>方法</th><th>路径</th><th>功能</th><th>参数</th></tr></thead><tbody>
+          <tr><td><span class="method get">GET</span></td><td>/api/couple/profile</td><td>获取情侣资料</td><td>-</td></tr>
+          <tr><td><span class="method put">PUT</span></td><td>/api/couple/profile</td><td>更新情侣资料</td><td>partner1_name, partner2_name, anniversary_date</td></tr>
+          <tr><td><span class="method get">GET</span></td><td>/api/couple/anniversaries</td><td>获取纪念日列表</td><td>-</td></tr>
+          <tr><td><span class="method post">POST</span></td><td>/api/couple/anniversaries</td><td>创建纪念日</td><td>title, date, description</td></tr>
+          <tr><td><span class="method delete">DELETE</span></td><td>/api/couple/anniversaries/:id</td><td>删除纪念日</td><td>-</td></tr>
+          <tr><td><span class="method post">POST</span></td><td>/api/couple/photos</td><td>上传照片 ⚠️无限制</td><td>file (任意文件)</td></tr>
+          <tr><td><span class="method get">GET</span></td><td>/api/couple/photos</td><td>获取照片列表</td><td>-</td></tr>
+          <tr><td><span class="method delete">DELETE</span></td><td>/api/couple/photos/:id</td><td>删除照片</td><td>-</td></tr>
+        </tbody></table>
+        <h3 style="font-size:14px;margin:12px 0 8px">⚙️ 系统管理 (System)</h3>
+        <table class="api-table"><thead><tr><th>方法</th><th>路径</th><th>功能</th><th>参数</th></tr></thead><tbody>
+          <tr><td><span class="method get">GET</span></td><td>/api/system/status</td><td>获取系统状态</td><td>-</td></tr>
+        </tbody></table>
+      </div>
+    </div>
+
+    <div class="section" id="file-list">
+      <div class="section-header collapsed" onclick="toggleSection(this)">
+        <span class="icon">📁</span><h2>文件列表</h2><div class="toggle">▼</div>
+      </div>
+      <div class="section-body hidden">
+        <h3 style="font-size:14px;margin:0 0 8px">前端文件 — 入口与路由</h3>
+        <table class="file-table"><thead><tr><th class="ft-icon"></th><th>文件名</th><th>路径</th><th>说明</th></tr></thead><tbody>
+          <tr><td class="ft-icon">📄</td><td class="ft-name">App.vue</td><td class="ft-path">src/App.vue</td><td class="ft-desc">根组件，路由出口+导航栏</td></tr>
+          <tr><td class="ft-icon">📄</td><td class="ft-name">main.js</td><td class="ft-path">src/main.js</td><td class="ft-desc">应用入口，挂载Vue+Pinia+Router</td></tr>
+          <tr><td class="ft-icon">📄</td><td class="ft-name">router.js</td><td class="ft-path">src/router.js</td><td class="ft-desc">路由配置，9个路由+导航守卫</td></tr>
+          <tr><td class="ft-icon">📄</td><td class="ft-name">api.js</td><td class="ft-path">src/api/api.js</td><td class="ft-desc">Axios封装，9个模块API工厂，366行</td></tr>
+        </tbody></table>
+        <h3 style="font-size:14px;margin:12px 0 8px">前端文件 — 视图组件</h3>
+        <table class="file-table"><thead><tr><th class="ft-icon"></th><th>文件名</th><th>路径</th><th>说明</th></tr></thead><tbody>
+          <tr><td class="ft-icon">🖼️</td><td class="ft-name">TaskView.vue</td><td class="ft-path">src/views/TaskView.vue</td><td class="ft-desc">任务管理视图，列表+表单+标签筛选</td></tr>
+          <tr><td class="ft-icon">🖼️</td><td class="ft-name">FinanceView.vue</td><td class="ft-path">src/views/FinanceView.vue</td><td class="ft-desc">财务管理视图，收支记录+统计图表</td></tr>
+          <tr><td class="ft-icon">🖼️</td><td class="ft-name">InventoryView.vue</td><td class="ft-path">src/views/InventoryView.vue</td><td class="ft-desc">库存管理视图，物品列表+分类筛选</td></tr>
+          <tr><td class="ft-icon">🖼️</td><td class="ft-name">FitnessView.vue</td><td class="ft-path">src/views/FitnessView.vue</td><td class="ft-desc">健身管理视图，运动记录+趋势图</td></tr>
+          <tr><td class="ft-icon">🖼️</td><td class="ft-name">DebtView.vue</td><td class="ft-path">src/views/DebtView.vue</td><td class="ft-desc">债务管理视图，借还记录+状态标签</td></tr>
+          <tr><td class="ft-icon">🖼️</td><td class="ft-name">TutorialView.vue</td><td class="ft-path">src/views/TutorialView.vue</td><td class="ft-desc">教程管理视图，教程列表+分类</td></tr>
+          <tr><td class="ft-icon">🖼️</td><td class="ft-name">PhotographyView.vue</td><td class="ft-path">src/views/PhotographyView.vue</td><td class="ft-desc">摄影管理视图，教程列表</td></tr>
+          <tr><td class="ft-icon">🖼️</td><td class="ft-name">RecipeView.vue</td><td class="ft-path">src/views/RecipeView.vue</td><td class="ft-desc">食谱管理视图，食谱列表</td></tr>
+          <tr><td class="ft-icon">🖼️</td><td class="ft-name">CoupleView.vue</td><td class="ft-path">src/views/CoupleView.vue</td><td class="ft-desc">情侣空间视图，资料+纪念日+照片</td></tr>
+          <tr><td class="ft-icon">🖼️</td><td class="ft-name">SettingsView.vue</td><td class="ft-path">src/views/SettingsView.vue</td><td class="ft-desc">设置页面视图</td></tr>
+        </tbody></table>
+        <h3 style="font-size:14px;margin:12px 0 8px">前端文件 — 状态管理</h3>
+        <table class="file-table"><thead><tr><th class="ft-icon"></th><th>文件名</th><th>路径</th><th>说明</th></tr></thead><tbody>
+          <tr><td class="ft-icon">📦</td><td class="ft-name">todoStore.js</td><td class="ft-path">src/stores/todoStore.js</td><td class="ft-desc">任务状态管理，fetchAll/create/update/delete</td></tr>
+          <tr><td class="ft-icon">📦</td><td class="ft-name">financeStore.js</td><td class="ft-path">src/stores/financeStore.js</td><td class="ft-desc">财务状态管理</td></tr>
+          <tr><td class="ft-icon">📦</td><td class="ft-name">inventoryStore.js</td><td class="ft-path">src/stores/inventoryStore.js</td><td class="ft-desc">库存状态管理</td></tr>
+          <tr><td class="ft-icon">📦</td><td class="ft-name">fitnessStore.js</td><td class="ft-path">src/stores/fitnessStore.js</td><td class="ft-desc">健身状态管理</td></tr>
+          <tr><td class="ft-icon">📦</td><td class="ft-name">debtStore.js</td><td class="ft-path">src/stores/debtStore.js</td><td class="ft-desc">债务状态管理</td></tr>
+          <tr><td class="ft-icon">📦</td><td class="ft-name">tutorialStore.js</td><td class="ft-path">src/stores/tutorialStore.js</td><td class="ft-desc">教程状态管理</td></tr>
+          <tr><td class="ft-icon">📦</td><td class="ft-name">photographyStore.js</td><td class="ft-path">src/stores/photographyStore.js</td><td class="ft-desc">摄影状态管理</td></tr>
+          <tr><td class="ft-icon">📦</td><td class="ft-name">recipeStore.js</td><td class="ft-path">src/stores/recipeStore.js</td><td class="ft-desc">食谱状态管理</td></tr>
+          <tr><td class="ft-icon">📦</td><td class="ft-name">coupleStore.js</td><td class="ft-path">src/stores/coupleStore.js</td><td class="ft-desc">情侣空间状态管理</td></tr>
+        </tbody></table>
+        <h3 style="font-size:14px;margin:12px 0 8px">前端文件 — 配置</h3>
+        <table class="file-table"><thead><tr><th class="ft-icon"></th><th>文件名</th><th>路径</th><th>说明</th></tr></thead><tbody>
+          <tr><td class="ft-icon">⚙️</td><td class="ft-name">vite.config.js</td><td class="ft-path">vite.config.js</td><td class="ft-desc">Vite配置，端口3210，代理/api</td></tr>
+          <tr><td class="ft-icon">⚙️</td><td class="ft-name">.env.development</td><td class="ft-path">.env.development</td><td class="ft-desc">开发环境变量 VITE_API_BASE=http://localhost:9527/api</td></tr>
+          <tr><td class="ft-icon">⚙️</td><td class="ft-name">.env.production</td><td class="ft-path">.env.production</td><td class="ft-desc">生产环境变量 VITE_API_BASE=/api</td></tr>
+          <tr><td class="ft-icon">⚙️</td><td class="ft-name">package.json</td><td class="ft-path">package.json</td><td class="ft-desc">前端依赖配置</td></tr>
+        </tbody></table>
+
+        <h3 style="font-size:14px;margin:16px 0 8px;border-top:1px solid var(--border);padding-top:12px">后端文件 — 控制器</h3>
+        <table class="file-table"><thead><tr><th class="ft-icon"></th><th>文件名</th><th>路径</th><th>说明</th></tr></thead><tbody>
+          <tr><td class="ft-icon">🔧</td><td class="ft-name">TodoController.php</td><td class="ft-path">server/app/controller/TodoController.php</td><td class="ft-desc">任务CRUD+标签关联+统计+排序</td></tr>
+          <tr><td class="ft-icon">🔧</td><td class="ft-name">TagController.php</td><td class="ft-path">server/app/controller/Tag.php</td><td class="ft-desc">标签CRUD+关联统计（非标准命名Tag.php）</td></tr>
+          <tr><td class="ft-icon">🔧</td><td class="ft-name">FinanceController.php</td><td class="ft-path">server/app/controller/Finance.php</td><td class="ft-desc">财务CRUD+统计（非标准命名Finance.php）</td></tr>
+          <tr><td class="ft-icon">🔧</td><td class="ft-name">InventoryController.php</td><td class="ft-path">server/app/controller/InventoryController.php</td><td class="ft-desc">库存CRUD+统计</td></tr>
+          <tr><td class="ft-icon">🔧</td><td class="ft-name">FitnessController.php</td><td class="ft-path">server/app/controller/FitnessController.php</td><td class="ft-desc">健身CRUD+统计</td></tr>
+          <tr><td class="ft-icon">🔧</td><td class="ft-name">DebtController.php</td><td class="ft-path">server/app/controller/DebtController.php</td><td class="ft-desc">债务CRUD+统计</td></tr>
+          <tr><td class="ft-icon">🔧</td><td class="ft-name">TutorialController.php</td><td class="ft-path">server/app/controller/TutorialController.php</td><td class="ft-desc">教程CRUD+SSRF外部获取</td></tr>
+          <tr><td class="ft-icon">🔧</td><td class="ft-name">PhotographyController.php</td><td class="ft-path">server/app/controller/PhotographyController.php</td><td class="ft-desc">摄影教程CRUD</td></tr>
+          <tr><td class="ft-icon">🔧</td><td class="ft-name">RecipeController.php</td><td class="ft-path">server/app/controller/RecipeController.php</td><td class="ft-desc">食谱教程CRUD</td></tr>
+          <tr><td class="ft-icon">🔧</td><td class="ft-name">CoupleController.php</td><td class="ft-path">server/app/controller/CoupleController.php</td><td class="ft-desc">情侣资料+纪念日+照片上传</td></tr>
+          <tr><td class="ft-icon">🔧</td><td class="ft-name">SystemController.php</td><td class="ft-path">server/app/controller/SystemController.php</td><td class="ft-desc">系统状态检查</td></tr>
+          <tr><td class="ft-icon">📄</td><td class="ft-name">Index.php</td><td class="ft-path">server/app/controller/Index.php</td><td class="ft-desc">默认控制器（ThinkPHP内置）</td></tr>
+        </tbody></table>
+        <h3 style="font-size:14px;margin:12px 0 8px">后端文件 — 中间件与模型</h3>
+        <table class="file-table"><thead><tr><th class="ft-icon"></th><th>文件名</th><th>路径</th><th>说明</th></tr></thead><tbody>
+          <tr><td class="ft-icon">🛡️</td><td class="ft-name">Cors.php</td><td class="ft-path">server/app/middleware/Cors.php</td><td class="ft-desc">跨域中间件，Allow-Origin: *</td></tr>
+          <tr><td class="ft-icon">🛡️</td><td class="ft-name">Auth.php</td><td class="ft-path">server/app/middleware/Auth.php</td><td class="ft-desc">认证中间件，硬编码userId=1</td></tr>
+          <tr><td class="ft-icon">🗄️</td><td class="ft-name">Tag.php</td><td class="ft-path">server/app/model/Tag.php</td><td class="ft-desc">标签模型</td></tr>
+        </tbody></table>
+        <h3 style="font-size:14px;margin:12px 0 8px">后端文件 — 基础类与配置</h3>
+        <table class="file-table"><thead><tr><th class="ft-icon"></th><th>文件名</th><th>路径</th><th>说明</th></tr></thead><tbody>
+          <tr><td class="ft-icon">📄</td><td class="ft-name">BaseController.php</td><td class="ft-path">server/app/BaseController.php</td><td class="ft-desc">控制器基类</td></tr>
+          <tr><td class="ft-icon">📄</td><td class="ft-name">Request.php</td><td class="ft-path">server/app/Request.php</td><td class="ft-desc">请求处理类</td></tr>
+          <tr><td class="ft-icon">📄</td><td class="ft-name">ExceptionHandle.php</td><td class="ft-path">server/app/ExceptionHandle.php</td><td class="ft-desc">异常处理类</td></tr>
+          <tr><td class="ft-icon">📄</td><td class="ft-name">AppService.php</td><td class="ft-path">server/app/AppService.php</td><td class="ft-desc">应用服务类</td></tr>
+          <tr><td class="ft-icon">📄</td><td class="ft-name">common.php</td><td class="ft-path">server/app/common.php</td><td class="ft-desc">公共函数文件</td></tr>
+          <tr><td class="ft-icon">📄</td><td class="ft-name">middleware.php</td><td class="ft-path">server/app/middleware.php</td><td class="ft-desc">中间件注册配置</td></tr>
+          <tr><td class="ft-icon">📄</td><td class="ft-name">event.php</td><td class="ft-path">server/app/event.php</td><td class="ft-desc">事件绑定配置</td></tr>
+          <tr><td class="ft-icon">📄</td><td class="ft-name">provider.php</td><td class="ft-path">server/app/provider.php</td><td class="ft-desc">服务提供者注册</td></tr>
+          <tr><td class="ft-icon">📄</td><td class="ft-name">service.php</td><td class="ft-path">server/app/service.php</td><td class="ft-desc">服务注册</td></tr>
+        </tbody></table>
+        <h3 style="font-size:14px;margin:12px 0 8px">后端文件 — 路由与入口</h3>
+        <table class="file-table"><thead><tr><th class="ft-icon"></th><th>文件名</th><th>路径</th><th>说明</th></tr></thead><tbody>
+          <tr><td class="ft-icon">📄</td><td class="ft-name">app.php</td><td class="ft-path">server/route/app.php</td><td class="ft-desc">路由配置，11个API路由组</td></tr>
+          <tr><td class="ft-icon">📄</td><td class="ft-name">index.php</td><td class="ft-path">server/public/index.php</td><td class="ft-desc">Web入口文件</td></tr>
+          <tr><td class="ft-icon">📄</td><td class="ft-name">router.php</td><td class="ft-path">server/public/router.php</td><td class="ft-desc">开发服务器路由文件</td></tr>
+        </tbody></table>
+        <h3 style="font-size:14px;margin:12px 0 8px">后端文件 — 配置文件</h3>
+        <table class="file-table"><thead><tr><th class="ft-icon"></th><th>文件名</th><th>路径</th><th>说明</th></tr></thead><tbody>
+          <tr><td class="ft-icon">⚙️</td><td class="ft-name">app.php</td><td class="ft-path">server/config/app.php</td><td class="ft-desc">应用配置</td></tr>
+          <tr><td class="ft-icon">⚙️</td><td class="ft-name">database.php</td><td class="ft-path">server/config/database.php</td><td class="ft-desc">数据库连接配置</td></tr>
+          <tr><td class="ft-icon">⚙️</td><td class="ft-name">filesystem.php</td><td class="ft-path">server/config/filesystem.php</td><td class="ft-desc">文件系统配置</td></tr>
+          <tr><td class="ft-icon">⚙️</td><td class="ft-name">middleware.php</td><td class="ft-path">server/config/middleware.php</td><td class="ft-desc">中间件配置</td></tr>
+          <tr><td class="ft-icon">⚙️</td><td class="ft-name">route.php</td><td class="ft-path">server/config/route.php</td><td class="ft-desc">路由配置</td></tr>
+          <tr><td class="ft-icon">⚙️</td><td class="ft-name">cache.php</td><td class="ft-path">server/config/cache.php</td><td class="ft-desc">缓存配置</td></tr>
+          <tr><td class="ft-icon">⚙️</td><td class="ft-name">session.php</td><td class="ft-path">server/config/session.php</td><td class="ft-desc">会话配置</td></tr>
+          <tr><td class="ft-icon">⚙️</td><td class="ft-name">log.php</td><td class="ft-path">server/config/log.php</td><td class="ft-desc">日志配置</td></tr>
+          <tr><td class="ft-icon">⚙️</td><td class="ft-name">cookie.php</td><td class="ft-path">server/config/cookie.php</td><td class="ft-desc">Cookie配置</td></tr>
+          <tr><td class="ft-icon">⚙️</td><td class="ft-name">console.php</td><td class="ft-path">server/config/console.php</td><td class="ft-desc">控制台配置</td></tr>
+          <tr><td class="ft-icon">⚙️</td><td class="ft-name">lang.php</td><td class="ft-path">server/config/lang.php</td><td class="ft-desc">多语言配置</td></tr>
+          <tr><td class="ft-icon">⚙️</td><td class="ft-name">view.php</td><td class="ft-path">server/config/view.php</td><td class="ft-desc">视图配置</td></tr>
+          <tr><td class="ft-icon">⚙️</td><td class="ft-name">trace.php</td><td class="ft-path">server/config/trace.php</td><td class="ft-desc">调试追踪配置</td></tr>
+        </tbody></table>
+        <h3 style="font-size:14px;margin:12px 0 8px">后端文件 — 数据库与环境</h3>
+        <table class="file-table"><thead><tr><th class="ft-icon"></th><th>文件名</th><th>路径</th><th>说明</th></tr></thead><tbody>
+          <tr><td class="ft-icon">🗄️</td><td class="ft-name">database.sql</td><td class="ft-path">server/database.sql</td><td class="ft-desc">数据库建表SQL（17张表）</td></tr>
+          <tr><td class="ft-icon">🗄️</td><td class="ft-name">test-data.sql</td><td class="ft-path">server/test-data.sql</td><td class="ft-desc">测试数据SQL</td></tr>
+          <tr><td class="ft-icon">⚙️</td><td class="ft-name">.env</td><td class="ft-path">server/.env</td><td class="ft-desc">环境变量（数据库密码等）</td></tr>
+          <tr><td class="ft-icon">⚙️</td><td class="ft-name">composer.json</td><td class="ft-path">server/composer.json</td><td class="ft-desc">PHP依赖配置</td></tr>
+          <tr><td class="ft-icon">📄</td><td class="ft-name">think</td><td class="ft-path">server/think</td><td class="ft-desc">ThinkPHP命令行入口</td></tr>
+        </tbody></table>
+      </div>
+    </div>
+
+    <div class="section" id="vulnerabilities">
+      <div class="section-header collapsed" onclick="toggleSection(this)">
+        <span class="icon">🔒</span><h2>安全漏洞审查</h2>
+        <span class="header-badge critical">2 严重</span><span class="header-badge high">2 高危</span><span class="header-badge medium">3 中危</span>
+        <div class="toggle">▼</div>
+      </div>
+      <div class="section-body hidden">
+        <div class="issue-card critical">
+          <div class="ic-head"><span class="badge critical">严重</span><span class="ic-title">SSRF 服务端请求伪造</span><span class="ic-loc">server/app/controller/TutorialController.php:fetchUrl()</span></div>
+          <div class="ic-desc">控制器直接使用用户输入的URL发起服务端请求，未做任何域名白名单校验，攻击者可访问内网资源</div>
+          <div class="code-fix-pair">
+            <div><span class="code-fix-label vuln">⚠️ 漏洞代码</span><pre class="code-block"><code><span class="err-line">$url = $this->request->param('url');</span>
+$content = file_get_contents($url);
+return json(['code' => 200, 'data' => $content]);</code></pre></div>
+            <div><span class="code-fix-label fix">✅ 修复代码</span><pre class="code-block"><code><span class="fix-line">$url = $this->request->param('url');</span>
+$allowed = ['jsonplaceholder.typicode.com'];
+$host = parse_url($url, PHP_URL_HOST);
+if (!in_array($host, $allowed)) {
+    return json(['code'=>403,'msg'=>'域名不在白名单']);
+}
+<span class="fix-line">$content = file_get_contents($url);</span></code></pre></div>
+          </div>
+        </div>
+        <div class="issue-card critical">
+          <div class="ic-head"><span class="badge critical">严重</span><span class="ic-title">任意文件上传漏洞</span><span class="ic-loc">server/app/controller/CoupleController.php:uploadPhoto()</span></div>
+          <div class="ic-desc">照片上传接口未校验文件类型和大小，攻击者可上传PHP WebShell获取服务器控制权</div>
+          <div class="code-fix-pair">
+            <div><span class="code-fix-label vuln">⚠️ 漏洞代码</span><pre class="code-block"><code><span class="err-line">$file = $this->request->file('file');</span>
+$saveName = Filesystem::disk('public')
+    ->putFile('couple', $file);
+return json(['code'=>200,'data'=>$saveName]);</code></pre></div>
+            <div><span class="code-fix-label fix">✅ 修复代码</span><pre class="code-block"><code><span class="fix-line">$file = $this->request->file('file');</span>
+<span class="fix-line">$ext = strtolower($file->getOriginalExtension());</span>
+<span class="fix-line">$allowed = ['jpg','jpeg','png','gif','webp'];</span>
+<span class="fix-line">if (!in_array($ext, $allowed)) {</span>
+    return json(['code'=>400,'msg'=>'仅允许图片文件']);
+}
+<span class="fix-line">if ($file->getSize() > 5*1024*1024) {</span>
+    return json(['code'=>400,'msg'=>'文件不能超过5MB']);
+}
+$saveName = Filesystem::disk('public')
+    ->putFile('couple', $file);</code></pre></div>
+          </div>
+        </div>
+        <div class="issue-card high">
+          <div class="ic-head"><span class="badge high">高危</span><span class="ic-title">硬编码用户认证</span><span class="ic-loc">server/app/middleware/Auth.php</span></div>
+          <div class="ic-desc">Auth中间件硬编码 userId=1，所有请求均以同一用户身份执行，无真实认证机制</div>
+          <div class="code-fix-pair">
+            <div><span class="code-fix-label vuln">⚠️ 漏洞代码</span><pre class="code-block"><code><span class="err-line">$request->userId = 1;</span>
+return $next($request);</code></pre></div>
+            <div><span class="code-fix-label fix">✅ 修复代码</span><pre class="code-block"><code><span class="fix-line">$token = $request->header('Authorization');</span>
+<span class="fix-line">$payload = Jwt::verify($token);</span>
+<span class="fix-line">if (!$payload) {</span>
+    return json(['code'=>401,'msg'=>'未登录']);
+}
+<span class="fix-line">$request->userId = $payload['uid'];</span>
+return $next($request);</code></pre></div>
+          </div>
+        </div>
+        <div class="issue-card high">
+          <div class="ic-head"><span class="badge high">高危</span><span class="ic-title">SQL注入风险（Db::raw拼接）</span><span class="ic-loc">server/app/controller/TodoController.php:index()</span></div>
+          <div class="ic-desc">排序字段使用 Db::raw() 直接拼接用户输入，存在SQL注入风险</div>
+          <div class="code-fix-pair">
+            <div><span class="code-fix-label vuln">⚠️ 漏洞代码</span><pre class="code-block"><code><span class="err-line">$sort = $this->request->param('sort', 'id');</span>
+<span class="err-line">$order = $this->request->param('order', 'desc');</span>
+->order(Db::raw($sort . ' ' . $order))</code></pre></div>
+            <div><span class="code-fix-label fix">✅ 修复代码</span><pre class="code-block"><code><span class="fix-line">$allowedSort = ['id','title','priority','created_at','due_date'];</span>
+<span class="fix-line">$allowedOrder = ['asc','desc'];</span>
+<span class="fix-line">$sort = in_array($sort, $allowedSort) ? $sort : 'id';</span>
+<span class="fix-line">$order = in_array($order, $allowedOrder) ? $order : 'desc';</span>
+->order($sort, $order)</code></pre></div>
+          </div>
+        </div>
+        <div class="issue-card medium">
+          <div class="ic-head"><span class="badge medium">中危</span><span class="ic-title">CORS配置过于宽松</span><span class="ic-loc">server/app/middleware/Cors.php</span></div>
+          <div class="ic-desc">允许所有来源（Access-Control-Allow-Origin: *），生产环境应限制为前端域名</div>
+          <div class="code-fix-pair">
+            <div><span class="code-fix-label vuln">⚠️ 漏洞代码</span><pre class="code-block"><code><span class="err-line">header('Access-Control-Allow-Origin: *');</span></code></pre></div>
+            <div><span class="code-fix-label fix">✅ 修复代码</span><pre class="code-block"><code><span class="fix-line">$origin = $request->header('origin');</span>
+<span class="fix-line">$allowed = ['http://localhost:3210']</span>
+    <span class="fix-line">. config('app.allowed_origins', []);</span>
+<span class="fix-line">if (in_array($origin, $allowed)) {</span>
+    header('Access-Control-Allow-Origin: ' . $origin);
+}</code></pre></div>
+          </div>
+        </div>
+        <div class="issue-card medium">
+          <div class="ic-head"><span class="badge medium">中危</span><span class="ic-title">缺少输入验证和XSS防护</span><span class="ic-loc">所有控制器</span></div>
+          <div class="ic-desc">所有控制器直接使用 param() 获取参数后写入数据库，未做验证和转义，存在存储型XSS风险</div>
+          <div class="code-fix-pair">
+            <div><span class="code-fix-label vuln">⚠️ 漏洞代码</span><pre class="code-block"><code><span class="err-line">$data = $this->request->param();</span>
+Db::name('flower_todos')->insert($data);</code></pre></div>
+            <div><span class="code-fix-label fix">✅ 修复代码</span><pre class="code-block"><code><span class="fix-line">$data = $this->request->only([</span>
+    'title','description','priority','due_date'
+]);
+<span class="fix-line">try {</span>
+    <span class="fix-line">validate(TodoValidate::class)</span>
+        ->check($data);
+} catch (ValidateException $e) {
+    return json(['code'=>400,'msg'=>$e->getError()]);
+}
+Db::name('flower_todos')->insert($data);</code></pre></div>
+          </div>
+        </div>
+        <div class="issue-card medium">
+          <div class="ic-head"><span class="badge medium">中危</span><span class="ic-title">敏感信息泄露</span><span class="ic-loc">server/.env</span></div>
+          <div class="ic-desc">数据库密码等敏感信息存储在 .env 文件中，但未加入 .gitignore，可能被提交到版本库</div>
+          <div class="note-block">建议：确保 .env 已加入 .gitignore，生产环境使用环境变量注入而非文件</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="logic">
+      <div class="section-header collapsed" onclick="toggleSection(this)">
+        <span class="icon">🧠</span><h2>逻辑问题与冗余代码</h2>
+        <span class="header-badge high">3 逻辑</span><span class="header-badge medium">4 冗余</span>
+        <div class="toggle">▼</div>
+      </div>
+      <div class="section-body hidden">
+        <h3 style="font-size:14px;margin:0 0 8px">逻辑问题</h3>
+        <div class="issue-card high">
+          <div class="ic-head"><span class="badge high">逻辑</span><span class="ic-title">前后端字段名不匹配</span><span class="ic-loc">CoupleView.vue ↔ CoupleController.php</span></div>
+          <div class="ic-desc">前端使用 partner1_name/partner2_name，后端数据库字段为 partner1/partner2，导致数据无法正确映射</div>
+          <div class="code-fix-pair">
+            <div><span class="code-fix-label vuln">⚠️ 前端字段</span><pre class="code-block"><code><span class="err-line">partner1_name: profile.partner1_name</span>
+<span class="err-line">partner2_name: profile.partner2_name</span></code></pre></div>
+            <div><span class="code-fix-label fix">✅ 统一为</span><pre class="code-block"><code><span class="fix-line">partner1: profile.partner1</span>
+<span class="fix-line">partner2: profile.partner2</span></code></pre></div>
+          </div>
+        </div>
+        <div class="issue-card high">
+          <div class="ic-head"><span class="badge high">逻辑</span><span class="ic-title">照片URL硬编码后端地址</span><span class="ic-loc">src/views/CoupleView.vue</span></div>
+          <div class="ic-desc">图片URL拼接中硬编码 http://localhost:9527，部署到生产环境后会失效</div>
+          <div class="code-fix-pair">
+            <div><span class="code-fix-label vuln">⚠️ 漏洞代码</span><pre class="code-block"><code><span class="err-line">src="http://localhost:9527/" + photo.path</span></code></pre></div>
+            <div><span class="code-fix-label fix">✅ 修复代码</span><pre class="code-block"><code><span class="fix-line">src="import.meta.env.VITE_API_BASE</span>
+    <span class="fix-line">.replace('/api','') + '/' + photo.path</span></code></pre></div>
+          </div>
+        </div>
+        <div class="issue-card high">
+          <div class="ic-head"><span class="badge high">逻辑</span><span class="ic-title">标签关联删除不完整</span><span class="ic-loc">TodoController.php:delete() + TagController.php:delete()</span></div>
+          <div class="ic-desc">删除Todo时不清理关联表 flower_todo_tags，删除Tag时也不清理关联记录，导致孤立数据</div>
+          <div class="code-fix-pair">
+            <div><span class="code-fix-label vuln">⚠️ 漏洞代码</span><pre class="code-block"><code>Db::name('flower_todos')
+    ->where('id',$id)->delete();
+<span class="err-line">// 缺少: 关联表清理</span></code></pre></div>
+            <div><span class="code-fix-label fix">✅ 修复代码</span><pre class="code-block"><code>Db::name('flower_todos')
+    ->where('id',$id)->delete();
+<span class="fix-line">Db::name('flower_todo_tags')</span>
+    <span class="fix-line">->where('todo_id',$id)->delete();</span></code></pre></div>
+          </div>
+        </div>
+        <h3 style="font-size:14px;margin:16px 0 8px;border-top:1px solid var(--border);padding-top:12px">冗余代码与文件</h3>
+        <div class="issue-card medium">
+          <div class="ic-head"><span class="badge medium">冗余</span><span class="ic-title">三个教程控制器高度重复</span><span class="ic-loc">TutorialController / PhotographyController / RecipeController</span></div>
+          <div class="ic-desc">三个控制器的CRUD逻辑几乎完全相同，仅表名和分类不同，应抽取为基类或Trait</div>
+          <div class="note-block">建议：创建 BaseTutorialController 基类，子类仅需指定 $tableName 和 $category</div>
+        </div>
+        <div class="issue-card medium">
+          <div class="ic-head"><span class="badge medium">冗余</span><span class="ic-title">api.js 中重复的CRUD方法</span><span class="ic-loc">src/api/api.js</span></div>
+          <div class="ic-desc">每个模块都有 create/read/update/delete 四个方法，可抽取为工厂函数 generateApi(module)</div>
+        </div>
+        <div class="issue-card medium">
+          <div class="ic-head"><span class="badge medium">冗余</span><span class="ic-title">9个Store结构高度相似</span><span class="ic-loc">src/stores/*.js</span></div>
+          <div class="ic-desc">所有Store都有相同的 items/loading/error/fetchAll/create/update/delete 模式，可抽取为 composable</div>
+        </div>
+        <div class="issue-card medium">
+          <div class="ic-head"><span class="badge medium">冗余</span><span class="ic-title">前端视图组件重复模板</span><span class="ic-loc">src/views/*.vue</span></div>
+          <div class="ic-desc">各视图的列表/表单/弹窗模板高度相似，可抽取为通用 CRUDView 组件</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" id="compatibility">
+      <div class="section-header collapsed" onclick="toggleSection(this)">
+        <span class="icon">🔗</span><h2>前后端运行匹配验证</h2><div class="toggle">▼</div>
+      </div>
+      <div class="section-body hidden">
+        <table class="compat-table">
+          <thead><tr><th>检查项</th><th>前端</th><th>后端</th><th>状态</th></tr></thead>
+          <tbody>
+            <tr><td>API端口</td><td>localhost:9527 (.env.development)</td><td>php think run --port=9527</td><td class="status-ok">✅ 匹配</td></tr>
+            <tr><td>API前缀</td><td>/api (VITE_API_BASE)</td><td>Route::group('api')</td><td class="status-ok">✅ 匹配</td></tr>
+            <tr><td>CORS配置</td><td>Axios withCredentials: false</td><td>Allow-Origin: *</td><td class="status-ok">✅ 匹配</td></tr>
+            <tr><td>Todo CRUD</td><td>todoApi (api.js)</td><td>TodoController</td><td class="status-ok">✅ 匹配</td></tr>
+            <tr><td>Finance CRUD</td><td>financeApi (api.js)</td><td>FinanceController (Finance.php)</td><td class="status-ok">✅ 匹配</td></tr>
+            <tr><td>Inventory CRUD</td><td>inventoryApi (api.js)</td><td>InventoryController</td><td class="status-ok">✅ 匹配</td></tr>
+            <tr><td>Fitness CRUD</td><td>fitnessApi (api.js)</td><td>FitnessController</td><td class="status-ok">✅ 匹配</td></tr>
+            <tr><td>Debt CRUD</td><td>debtApi (api.js)</td><td>DebtController</td><td class="status-ok">✅ 匹配</td></tr>
+            <tr><td>Tag CRUD</td><td>tagApi (api.js)</td><td>TagController (Tag.php)</td><td class="status-ok">✅ 匹配</td></tr>
+            <tr><td>Tutorial CRUD</td><td>tutorialApi (api.js)</td><td>TutorialController</td><td class="status-ok">✅ 匹配</td></tr>
+            <tr><td>Photography CRUD</td><td>photographyApi (api.js)</td><td>PhotographyController</td><td class="status-ok">✅ 匹配</td></tr>
+            <tr><td>Recipe CRUD</td><td>recipeApi (api.js)</td><td>RecipeController</td><td class="status-ok">✅ 匹配</td></tr>
+            <tr><td>Couple Profile</td><td>coupleApi (api.js)</td><td>CoupleController</td><td class="status-warn">⚠️ 字段名不匹配</td></tr>
+            <tr><td>Couple Photos</td><td>CoupleView.vue 硬编码URL</td><td>CoupleController::uploadPhoto</td><td class="status-err">❌ 硬编码地址</td></tr>
+            <tr><td>认证机制</td><td>无Token发送</td><td>Auth中间件 userId=1</td><td class="status-warn">⚠️ 无真实认证</td></tr>
+            <tr><td>控制器命名</td><td>api.js 统一命名</td><td>Finance.php/Tag.php 非标准</td><td class="status-warn">⚠️ 命名不一致</td></tr>
+            <tr><td>路由注册</td><td>9个前端路由</td><td>11个API路由组</td><td class="status-ok">✅ 匹配</td></tr>
+            <tr><td>数据库表</td><td>9个Store对应</td><td>17张表</td><td class="status-ok">✅ 匹配</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="section" id="optimization">
+      <div class="section-header collapsed" onclick="toggleSection(this)">
+        <span class="icon">🚀</span><h2>优化建议</h2><div class="toggle">▼</div>
+      </div>
+      <div class="section-body hidden">
+        <h3 style="font-size:14px;margin:0 0 8px">🔴 安全优化（优先级最高）</h3>
+        <div class="module-card"><h4>1. 修复SSRF漏洞</h4><p>TutorialController::fetchUrl() 添加域名白名单校验</p></div>
+        <div class="module-card"><h4>2. 限制文件上传</h4><p>CoupleController::uploadPhoto() 添加文件类型和大小校验</p></div>
+        <div class="module-card"><h4>3. 实现真实认证</h4><p>替换硬编码 userId=1，实现 JWT Token 认证</p></div>
+        <div class="module-card"><h4>4. 参数验证</h4><p>所有控制器添加 ThinkPHP Validate 验证器</p></div>
+        <h3 style="font-size:14px;margin:12px 0 8px">🟡 架构优化</h3>
+        <div class="module-card"><h4>5. 抽取教程控制器基类</h4><p>合并 Tutorial/Photography/Recipe 控制器为 BaseTutorialController</p></div>
+        <div class="module-card"><h4>6. 统一控制器命名</h4><p>Finance.php → FinanceController.php，Tag.php → TagController.php</p></div>
+        <div class="module-card"><h4>7. 抽取前端API工厂函数</h4><p>api.js 中 generateApi(module) 替代重复CRUD方法</p></div>
+        <div class="module-card"><h4>8. 抽取Store composable</h4><p>创建 useCrudStore(module) composable 替代9个相似Store</p></div>
+        <h3 style="font-size:14px;margin:12px 0 8px">🟢 体验优化</h3>
+        <div class="module-card"><h4>9. 修复Couple字段映射</h4><p>统一前后端字段名为 partner1/partner2</p></div>
+        <div class="module-card"><h4>10. 修复照片URL硬编码</h4><p>使用环境变量替代硬编码 localhost:9527</p></div>
+        <div class="module-card"><h4>11. 添加标签关联清理</h4><p>删除Todo/Tag时同步清理关联表</p></div>
+      </div>
+    </div>
+    <div class="section" id="comparison">
+      <div class="section-header collapsed" onclick="toggleSection(this)">
+        <span class="icon">📊</span><h2>增量对比报告</h2>
+        <span class="header-badge new">0 新增</span><span class="header-badge fixed">0 已修复</span>
+        <div class="toggle">▼</div>
+      </div>
+      <div class="section-body hidden">
+        <div class="note-block">增量对比：对比上次报告的健康分数变化、新增/已修复问题</div>
+        <h3 style="font-size:14px;margin:12px 0 8px">健康分数变化</h3>
+        <table class="diff-table">
+          <thead><tr><th>维度</th><th>上次</th><th></th><th>本次</th><th>变化</th></tr></thead>
+          <tbody>
+            <tr><td>安全性</td><td>-</td><td>→</td><td class="diff-added">35%</td><td class="diff-changed">首次</td></tr>
+            <tr><td>逻辑性</td><td>-</td><td>→</td><td class="diff-added">60%</td><td class="diff-changed">首次</td></tr>
+            <tr><td>兼容性</td><td>-</td><td>→</td><td class="diff-added">75%</td><td class="diff-changed">首次</td></tr>
+            <tr><td>代码质量</td><td>-</td><td>→</td><td class="diff-added">55%</td><td class="diff-changed">首次</td></tr>
+          </tbody>
+        </table>
+        <div class="note-block" style="margin-top:12px">这是首次生成报告，下次生成时将自动对比上次数据，显示新增🆕和已修复✅问题</div>
+      </div>
+    </div>
+    <div class="section" id="roadmap">
+      <div class="section-header collapsed" onclick="toggleSection(this)">
+        <span class="icon">🗺️</span><h2>优化路线图</h2><div class="toggle">▼</div>
+      </div>
+      <div class="section-body hidden">
+        <div style="margin-bottom:12px">
+          <span class="progress-label" style="font-size:13px;font-weight:600">完成进度: 0/16 (0%)</span>
+          <div class="progress-bar"><div class="fill" style="width:0%"></div></div>
+        </div>
+        <div class="roadmap">
+          <div class="roadmap-phase">
+            <h4>🔴 Phase 1: 安全修复（紧急）</h4>
+            <label class="roadmap-item"><input type="checkbox" id="rm-1"><span class="ri-priority p0">P0</span>修复SSRF漏洞 — TutorialController域名白名单</label>
+            <label class="roadmap-item"><input type="checkbox" id="rm-2"><span class="ri-priority p0">P0</span>限制文件上传 — CoupleController类型+大小校验</label>
+            <label class="roadmap-item"><input type="checkbox" id="rm-3"><span class="ri-priority p0">P0</span>实现JWT认证 — 替换硬编码userId=1</label>
+            <label class="roadmap-item"><input type="checkbox" id="rm-4"><span class="ri-priority p0">P0</span>修复SQL注入 — 排序字段白名单校验</label>
+          </div>
+          <div class="roadmap-phase">
+            <h4>🟠 Phase 2: 安全加固</h4>
+            <label class="roadmap-item"><input type="checkbox" id="rm-5"><span class="ri-priority p1">P1</span>收紧CORS — 限制为前端域名</label>
+            <label class="roadmap-item"><input type="checkbox" id="rm-6"><span class="ri-priority p1">P1</span>添加参数验证 — 所有控制器Validate</label>
+            <label class="roadmap-item"><input type="checkbox" id="rm-7"><span class="ri-priority p1">P1</span>检查.env安全 — 确保不提交到版本库</label>
+          </div>
+          <div class="roadmap-phase">
+            <h4>🟡 Phase 3: 逻辑修复</h4>
+            <label class="roadmap-item"><input type="checkbox" id="rm-8"><span class="ri-priority p1">P1</span>修复Couple字段映射 — 统一partner1/partner2</label>
+            <label class="roadmap-item"><input type="checkbox" id="rm-9"><span class="ri-priority p1">P1</span>修复照片URL硬编码 — 使用环境变量</label>
+            <label class="roadmap-item"><input type="checkbox" id="rm-10"><span class="ri-priority p1">P1</span>添加关联表清理 — 删除时同步清理</label>
+          </div>
+          <div class="roadmap-phase">
+            <h4>🟢 Phase 4: 架构优化</h4>
+            <label class="roadmap-item"><input type="checkbox" id="rm-11"><span class="ri-priority p2">P2</span>抽取教程控制器基类 — 消除3个重复控制器</label>
+            <label class="roadmap-item"><input type="checkbox" id="rm-12"><span class="ri-priority p2">P2</span>统一控制器命名 — Finance.php→FinanceController.php</label>
+            <label class="roadmap-item"><input type="checkbox" id="rm-13"><span class="ri-priority p2">P2</span>抽取API工厂函数 — generateApi(module)</label>
+            <label class="roadmap-item"><input type="checkbox" id="rm-14"><span class="ri-priority p2">P2</span>抽取Store composable — useCrudStore(module)</label>
+          </div>
+          <div class="roadmap-phase">
+            <h4>🔵 Phase 5: 体验提升</h4>
+            <label class="roadmap-item"><input type="checkbox" id="rm-15"><span class="ri-priority p3">P3</span>抽取通用CRUD视图组件</label>
+            <label class="roadmap-item"><input type="checkbox" id="rm-16"><span class="ri-priority p3">P3</span>添加单元测试覆盖</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="report-assets/report.js"></script>
+</body>
+</html>
+

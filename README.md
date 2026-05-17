@@ -20,49 +20,53 @@
 
 打开报告时，12个板块默认折叠，左侧导航栏可快速跳转。点击任意标题即可展开查看详细内容。
 
-![报告总览 - 折叠状态](https://raw.githubusercontent.com/Luociqvq/html-summary-report/main/screenshots/01-overview-collapsed.png)
+![报告总览 - 折叠状态](screenshots/01-overview-collapsed.png)
 
 ### 📊 项目概览 — 统计卡片 + 健康分数
 
 展开后展示统计卡片（后端控制器数、前端视图数、数据库表数）和四维健康分数进度条：安全性、逻辑性、兼容性、代码质量。
 
-![项目概览](https://raw.githubusercontent.com/Luociqvq/html-summary-report/main/screenshots/02-overview-expanded.png)
+![项目概览](screenshots/02-overview-expanded.png)
 
 ### 🏗️ 系统架构 — 分层架构图
 
 Flexbox盒子布局的系统架构图，从上到下展示应用层、前端模块、后端中间件、数据层的分层关系和连接方式。
 
-![系统架构总览](https://raw.githubusercontent.com/Luociqvq/html-summary-report/main/screenshots/03-architecture-expanded.png)
+![系统架构总览](screenshots/03-architecture-expanded.png)
 
 ### 🔄 请求流程 — 完整生命周期
 
 从用户操作到界面更新的完整请求流程图：Vue组件 → Pinia Store → Axios → 中间件 → Controller → 数据库 → 响应返回。
 
-![数据请求流程](https://raw.githubusercontent.com/Luociqvq/html-summary-report/main/screenshots/04-flow-expanded.png)
+![数据请求流程](screenshots/04-flow-expanded.png)
 
 ### 📋 功能表 — 模块卡片网格
 
 每个功能模块一张卡片，包含功能描述、能力标签（CRUD/统计/筛选/安全警告）和详细说明。
 
-![功能表](https://raw.githubusercontent.com/Luociqvq/html-summary-report/main/screenshots/05-features-expanded.png)
+![功能表](screenshots/05-features-expanded.png)
 
 ### 🔒 安全漏洞 — 漏洞代码 vs 修复代码
 
 漏洞按严重性分级（严重/高危/中危），每个漏洞附带 **⚠️ 漏洞代码** 和 **✅ 修复代码** 双栏并排对比，关键行高亮标注。
 
-![安全漏洞审查](https://raw.githubusercontent.com/Luociqvq/html-summary-report/main/screenshots/06-vulnerabilities-expanded.png)
+![安全漏洞审查](screenshots/06-vulnerabilities-expanded.png)
 
 ### 🗺️ 优化路线图 — 可勾选追踪
 
 分5个阶段（P0紧急→P3体验提升），checkbox勾选后进度条自动更新，状态持久化到 localStorage，刷新不丢失。
 
-![优化路线图](https://raw.githubusercontent.com/Luociqvq/html-summary-report/main/screenshots/07-roadmap-expanded.png)
+![优化路线图](screenshots/07-roadmap-expanded.png)
 
 ### 🌙 暗色模式
 
 CSS变量驱动，一键切换暗色主题，所有板块完美适配。
 
-![暗色模式](https://raw.githubusercontent.com/Luociqvq/html-summary-report/main/screenshots/08-dark-mode.png)
+![暗色模式](screenshots/08-dark-mode.png)
+
+## 示例报告
+
+仓库中包含一个示例报告文件 [summary-report_example.html](summary-report_example.html)，你可以下载后在浏览器中打开查看完整效果（需将 `report-assets/` 目录放在同目录下）。
 
 ## 核心特性
 
@@ -97,6 +101,7 @@ git clone https://github.com/Luociqvq/html-summary-report.git
 ├── SKILL.md                    ← Skill 指令文件（Agent读取执行）
 ├── DOCS.html                   ← HTML格式使用文档
 ├── DOCS.md                     ← Markdown格式使用文档
+├── summary-report_example.html ← 示例报告
 └── report-assets/
     ├── report.css              ← CSS模板（布局/组件/暗色/打印/响应式）
     └── report.js               ← JS模板（折叠/路线图/主题/复制/排序/对比）
