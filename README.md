@@ -16,7 +16,7 @@
 
 ## 报告长什么样？
 
-### 默认状态 — 所有板块折叠
+### 📊 总览 — 所有板块折叠
 
 打开报告时，12个板块默认折叠，左侧导航栏可快速跳转。点击任意标题即可展开查看详细内容。
 
@@ -46,23 +46,47 @@ Flexbox盒子布局的系统架构图，从上到下展示应用层、前端模�
 
 ![功能表](screenshots/05-features-expanded.png)
 
+### 🔌 API列表 — 端点详情表格
+
+完整的API端点表格，包含HTTP方法（颜色编码）、路径、功能描述、所属控制器。
+
+![API列表](screenshots/06-api-list-expanded.png)
+
+### 📁 文件列表 — 前后端文件完整清单
+
+前端和后端所有文件的完整列表，包含文件图标、文件名、完整路径和功能说明，按类别分组。
+
+![文件列表](screenshots/07-file-list-expanded.png)
+
 ### 🔒 安全漏洞 — 漏洞代码 vs 修复代码
 
 漏洞按严重性分级（严重/高危/中危），每个漏洞附带 **⚠️ 漏洞代码** 和 **✅ 修复代码** 双栏并排对比，关键行高亮标注。
 
-![安全漏洞审查](screenshots/06-vulnerabilities-expanded.png)
+![安全漏洞审查](screenshots/08-vulnerabilities-expanded.png)
 
-### 🗺️ 优化路线图 — 可勾选追踪
+### 🧠 逻辑问题 — 逻辑缺陷 + 冗余代码
+
+逻辑问题审查：字段不匹配、数据流错误、业务逻辑缺陷，以及冗余代码和孤立文件检测。
+
+![逻辑问题](screenshots/09-logic-expanded.png)
+
+### � 前后端匹配 — 兼容性验证
+
+前后端模块兼容性验证表格，✅匹配/⚠️警告/❌错误状态标注，检测API对齐、字段匹配、配置一致性。
+
+![前后端匹配](screenshots/10-compatibility-expanded.png)
+
+### 🚀 优化建议 — P0-P3优先级排序
+
+按P0紧急→P3体验提升排序的优化建议卡片，每条包含影响范围和实施建议。
+
+![优化建议](screenshots/11-optimization-expanded.png)
+
+### �🗺️ 优化路线图 — 可勾选追踪
 
 分5个阶段（P0紧急→P3体验提升），checkbox勾选后进度条自动更新，状态持久化到 localStorage，刷新不丢失。
 
-![优化路线图](screenshots/07-roadmap-expanded.png)
-
-### 🌙 暗色模式
-
-CSS变量驱动，一键切换暗色主题，所有板块完美适配。
-
-![暗色模式](screenshots/08-dark-mode.png)
+![优化路线图](screenshots/12-roadmap-expanded.png)
 
 ## 示例报告
 
@@ -102,6 +126,7 @@ git clone https://github.com/Luociqvq/html-summary-report.git
 ├── DOCS.html                   ← HTML格式使用文档
 ├── DOCS.md                     ← Markdown格式使用文档
 ├── summary-report_example.html ← 示例报告
+├── screenshots/                ← 报告截图
 └── report-assets/
     ├── report.css              ← CSS模板（布局/组件/暗色/打印/响应式）
     └── report.js               ← JS模板（折叠/路线图/主题/复制/排序/对比）
