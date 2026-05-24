@@ -1,6 +1,6 @@
-# 📋 HTML Summary Report — Trae IDE Skill
+# 📋 Summary Report Skill — Trae IDE Skill
 
-> 多项目通用的交互式项目审查报告生成器
+> 多项目通用的交互式项目审查报告生成器，支持 HTML 和 Markdown 两种输出格式，还可分析其他 Skill 的功能
 
 [![Author](https://img.shields.io/badge/Author-Luoci-6366f1)](https://github.com/luo-ci)
 [![Email](https://img.shields.io/badge/Email-luociqaq%40qq.com-red)](mailto:luociqaq@qq.com)
@@ -8,9 +8,11 @@
 
 ## 这是什么？
 
-这是一个 [Trae IDE](https://trae.ai) 的 Skill 插件。当你在项目中说 **"总结"** 时，它会自动检测你的技术栈，并行采集项目数据，然后生成一份 **交互式 HTML 审查报告**。
+这是一个 [Trae IDE](https://trae.ai) 的 Skill 插件。当你在项目中说 **"总结"** 时，它会自动检测你的技术栈，并行采集项目数据，然后生成一份 **交互式 HTML 审查报告** 或 **Markdown 格式报告**（用户可选择）。
 
 报告包含12个板块：项目概览、系统架构、请求流程、功能表、API列表、文件列表、安全漏洞审查、逻辑问题、前后端匹配、优化建议、增量对比、优化路线图。每个板块可折叠展开，漏洞附带修复代码，路线图可勾选追踪进度。
+
+此外，该 Skill 还支持 **分析其他 Skill** 的功能——读取目标 Skill 的 SKILL.md，生成结构化的功能分析报告，说明该 Skill 是做什么的、如何触发、核心功能、工作流程等。
 
 **支持的框架**：9种后端（ThinkPHP/Laravel/Django/Spring Boot/Express/NestJS/Node.js/Go/Symfony）+ 5种前端（Vue3/Vue2/Next.js/React/Nuxt3），自动检测，无需手动配置。
 
@@ -98,12 +100,14 @@ Flexbox盒子布局的系统架构图，从上到下展示应用层、前端模�
 |------|------|
 | 🔍 **自动框架检测** | 9种后端 + 5种前端框架自动识别，无需手动配置 |
 | ⚡ **并行数据采集** | 4批次17路并行搜索，快速高效收集项目数据 |
+| 📝 **双格式输出** | 支持 HTML（交互式）和 Markdown（纯文本）两种输出格式 |
 | 🔒 **漏洞+修复并排** | Critical/High/Medium漏洞附漏洞代码和修复代码双栏对比 |
 | 📌 **可勾选路线图** | 分阶段优化路线，checkbox勾选，进度自动更新并持久化 |
 | 🌙 **暗色模式** | CSS变量驱动，一键切换，状态保存到localStorage |
 | 📊 **增量对比** | 与上次报告对比，标记新增和已修复问题 |
 | 🏗️ **架构图+流程图** | Flexbox盒子布局的系统架构图和数据请求流程图 |
 | 📦 **多项目便携** | CSS/JS模板存储在skill目录，自动复制到目标项目 |
+| 🔍 **Skill分析** | 可分析其他Skill的功能，生成结构化的功能说明报告 |
 
 ## 安装
 
@@ -115,13 +119,13 @@ cd ~/.trae/skills   # macOS/Linux
 cd %USERPROFILE%\.trae\skills   # Windows
 
 # 克隆仓库
-git clone https://github.com/Luociqvq/html-summary-report.git
+git clone https://github.com/Luociqvq/Summary-Report-Skill.git
 ```
 
 安装后的目录结构：
 
 ```
-.trae/skills/html-summary-report/
+.trae/skills/Summary-Report-Skill/
 ├── SKILL.md                    ← Skill 指令文件（Agent读取执行）
 ├── DOCS.html                   ← HTML格式使用文档
 ├── DOCS.md                     ← Markdown格式使用文档
@@ -142,19 +146,24 @@ git clone https://github.com/Luociqvq/html-summary-report.git
 |--------|------|
 | `总结` | "帮我总结一下项目" |
 | `生成总结` | "生成总结报告" |
-| HTML格式审查请求 | "检查项目漏洞并生成HTML报告" |
+| 审查请求 | "检查项目漏洞并生成报告" |
+| `分析skill` | "分析这个skill是做什么的" |
+| Skill分析 | "帮我分析一下xxx skill的功能" |
+
+**注意**: 如果用户没有指定输出格式（HTML/Markdown），Skill 会自动询问用户选择。
 
 ### 工作流程
 
 ```
-1️⃣ 框架检测 → 2️⃣ 交互选板 → 3️⃣ 并行采集 → 4️⃣ 生成HTML → 5️⃣ 输出报告
+1️⃣ 框架检测 → 2️⃣ 格式选择 → 3️⃣ 交互选板 → 4️⃣ 并行采集 → 5️⃣ 生成报告 → 6️⃣ 输出文件
 ```
 
 1. **框架检测** — 自动检测项目技术栈
-2. **交互选板** — 询问你需要哪些板块和审查深度
-3. **并行采集** — 4批次17路并行搜索采集项目数据
-4. **生成HTML** — 按模板生成交互式HTML报告
-5. **输出报告** — 在项目根目录生成 `summary-report.html` + `report-assets/`
+2. **格式选择** — 若用户未指定格式，询问选择 HTML 或 Markdown
+3. **交互选板** — 询问你需要哪些板块和审查深度
+4. **并行采集** — 4批次17路并行搜索采集项目数据
+5. **生成报告** — 按模板生成交互式HTML报告或Markdown报告
+6. **输出文件** — 在项目根目录生成报告文件 + `report-assets/`（仅HTML模式）
 
 ### 输出文件
 
